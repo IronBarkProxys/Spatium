@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Spatium Movies Hub</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: black;
+  color: white;
+  overflow: hidden;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  flex-direction: row; 
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+  width: 320px;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(15px);
+  padding: 25px;
+  overflow-y: auto;
+  border-right: 1px solid rgba(255,255,255,0.15);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
+
+h2 {
+  margin: 0 0 15px 0;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  text-align: left;
+}
+
+/* --- SEARCH BAR --- */
+#searchBar {
+  width: 100%;
+  padding: 12px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  color: white;
+  margin-bottom: 20px;
+  outline: none;
+  font-family: inherit;
+  font-size: 13px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+#searchBar:focus {
+  border-color: white;
+}
+
+#movieList button {
+  display: block;
+  width: 100%;
+  margin: 4px 0;
+  padding: 12px;
+  background: transparent;
+  color: rgba(255,255,255,0.6);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: left;
+  font-family: inherit;
+}
+
+#movieList button:hover {
+  background: rgba(255,255,255,0.1);
+  color: white;
+  padding-left: 18px;
+}
+
+/* --- CENTER VIEWPORT --- */
+.viewport {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+#big-clock {
+  font-size: 140px;
+  font-weight: 100;
+  letter-spacing: -4px;
+  margin: 0;
+  user-select: none;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+#battery {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.05);
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.1);
+  z-index: 1000;
+  font-family: monospace;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="container">
+  <div class="sidebar">
+    <h2>Cinema Database</h2>
+    <input type="text" id="searchBar" placeholder="Search movies..." onkeyup="filterMovies()">
+    
+    <div id="movieList">
+      <button onclick="window.open('https://drive.google.com/drive/folders/1qeAJkq-B9pdqLXF1RfQWPbmAIOkPivSl','_blank')">Beavis and Butt-Head</button>
+      <button onclick="window.open('https://drive.google.com/drive/folders/1ZGPUs3433E9KdIAjRnOH3gfEXaq1rmcw?usp=drive_link','_blank')">Breaking Bad</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1BW7yv_y4uk99Nsjbc--z1beQ_bYYmUXk/view','_blank')">Captain Underpants</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1RoWQ2LZecPYvsZ48Sah7_xBvZzEHcXL1/view','_blank')">Cars</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1TKx-RUpz44aUVku1n-BJnJXXtjPIPOgV/view?usp=drive_link','_blank')">Cars 2</button>
+      <button onclick="window.open('https://drive.google.com/drive/folders/1iDvFUcwl4WvgAQgjPjrMDBarJ_I2NCSK','_blank')">Cobra Kai</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1siki1wYP3LpfjFpUT8Z9lJuJzl7MdBhX/view?usp=drive_link','_blank')">Despicable Me 4</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1J_WyATYoZH9qcaX5RNFrjrwmvySFPTom/view','_blank')">Fight Club</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1jP7PoHapLf_S_n75Afdc0RvzSwRqPcwm/view','_blank')">Finding Nemo</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1OyO1OdhtfwR883Uvi0QPP5iooGcxTVSY/view?usp=drive_link','_blank')">Five Nights At Freddy's</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1dW1XsOWtiL0mGHOFIB8n0rEhLPoa2buJ/view','_blank')">Five Nights At Freddy's 2</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1g_YZyeIbjua21PNL4ZLfeIzJx-givpPE/view','_blank')">Garfield</button>
+      <button onclick="window.open('https://docs.google.com/presentation/d/1ApQ-LQVYDqu2ttIkXDnNrg90C0l3PM6728PTqzBXtro/edit?usp=sharing','_blank')">Ghostbusters</button>
+      <button onclick="window.open('https://docs.google.com/presentation/d/1J2DzY7JL-DtNnJDKqQyetzzafDDDMcamqAyDEMtyp0A/edit?usp=sharing','_blank')">Ghostbusters 2</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1pP6Kkr-1WmcWWt2IKEIUv7RTkgMLXTmp/view?usp=drive_link','_blank')">Godzilla (2014)</button>
+      <button onclick="window.open('https://drive.google.com/file/d/15cslPKo6esN4D6oaMaRjcC3_eIwFDX4e/view?usp=drive_link','_blank')">Godzilla Minus One</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1emaZNk8shYA98Sq_K0x_iVT78_coOByR/view?usp=sharing','_blank')">Godzilla Vs Kong</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1xlVHznoHc3cczI4emQUNE0vuyD2H_x9g/view?usp=drive_link','_blank')">Godzilla: King Of Monsters</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1jucPocCb8aq23Bh-GFLcniAk-k5UU-wC/view','_blank')">Good Burger</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1l7dSSnBmw9Fnku5lxl7zYk7CsQa4JU3d/view','_blank')">Home Alone</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1Aj4Ys3ofogKhxEAMh6PUncpYF_OHZ_ZK/view?usp=drive_link','_blank')">Home Alone 2</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1NkmCNf5CUML_KZvNi4fgGKA8r7fpXIdd/view?usp=drive_link','_blank')">Hoppers</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1gZ4FVX5GLCSv2-i_sabXWhgl9u_3FeOB/view','_blank')">Hotel Transylvania</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1LZI5E52J_R_Cx6f3EXLl-BAn6vuhUduD/view','_blank')">Hotel Transylvania 2</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1ys7CQlyywTD5YlMeCpfp0ThltWcMH99E/view?usp=drive_link','_blank')">Jaws</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1AJqTDT_mbZLju6adLt6Dba73cdRmuDrC/view?usp=drive_link','_blank')">Leo</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1GLqywDPqfZSLmLAiKC8j2l0o52cAGP8S/view','_blank')">Oppenheimer</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1Mm4-trdWWnxtYyAfkIj--2SXem5HeIi2/view','_blank')">Princes And The Frog</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1p7bqEnvENeHTxRjKKONSpNh5murfawck/view','_blank')">Puss In Boots</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1-4M0OT7lpvxc4BdoFp9rEcBiV6zXL_Gl/view','_blank')">Ratatouille</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1QQx9ogqUJzS3G8GIZXLBAhgx2s2Ol2zZ/view?usp=drive_link','_blank')">Red One</button>
+      <button onclick="window.open('https://drive.google.com/file/d/14UKIE2jtMo0qFPbomlXVKsKA5l81W4OE/view','_blank')">Scream</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1XXmiwcrUSMi5rn90xr5hnBK6La8hBkhz/view','_blank')">Scream 2</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1O1mkNEfq98w2Zrxyg6XLCfJI_bmfwWp_/view','_blank')">Scream 3</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1t4kNJPFCytvx2ktdw5n6xBOtRNnBm5RJ/view','_blank')">Scream 4</button>
+      <button onclick="window.open('https://drive.google.com/file/d/152-KeFdBMBscGESWVWLuDS-YUf8VsRCd/view','_blank')">Scream 5</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1vL8qngL5I26Ga3mO25ByucDByagVgARl/view?usp=drive_link','_blank')">Scream 6</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1RtaN8_Xsodf4Ub5K_yRp6eOx62tbj7Ap/view?usp=drive_link','_blank')">Scream 7</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1VnID4qhUDF8EOWLQJ3Z1K-M0AwoOTlFt/view?usp=drive_link','_blank')">Shin Godzilla</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1_pQ3kbz_a8l3B7SKfdP9dYQwKax0WHUD/view?usp=drive_link','_blank')">South Park</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1QK9RHd2T-ijthIL7A6NQvRztPkTx8NtN/view','_blank')">Space Jam</button>
+      <button onclick="window.open('https://drive.google.com/file/u/0/d/17hubcXZlc8AQCick-5kdB11mpEQlM1Zw/view','_blank')">Space Jam 2</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1vPNUTkubVVmguVfwstRQm5xgbkRRii6z/view','_blank')">Spiderman: Far From Home</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1jGHx1i3EqHKmQmE42APmxUk4bYHrINQ_/view','_blank')">Spiderman: Homecoming</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1V3Bq0lrDQUxJay5DDs3gK69ZvRNb1j2u/view','_blank')">Spiderman: Into The Spider-Verse</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1mUF4PcT0_ZKofV0KHHdjxgTQdhF2BliQ/view','_blank')">Spiderman: No Way Home</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1REZiyOnZ6sDEzHpycx2KtU_vFP35CB6Z/view?usp=drive_link','_blank')">The Sandlot</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1_pQ3kbz_a8l3B7SKfdP9dYQwKax0WHUD/view?usp=drive_link','_blank')">Terrifier</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1_Jjo7rOcCkYt3UryVkV2XvTfrL4QvHTE/view?usp=drive_link','_blank')">Terrifier 2</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1sAj4FqfEIzHPIW7ZUPGGSOFTTaJr5AGI/view?usp=drive_link','_blank')">Terrifier 3</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1_pQ3kbz_a8l3B7SKfdP9dYQwKax0WHUD/view?usp=drive_link','_blank')">Thanksgiving</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1GzovJHzUxtS6XQQiPLVXj92hWZ7PTABa/view','_blank')">The Fast And The Furious</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1kipfsWxPV_DX1o_3BQrhLDsbk45RZDDP/view','_blank')">The Fast And The Furious: Tokyo Drift</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1a-NbGEHxpO6Y_RtoAKjKsgBeB-1Zah7k/view?usp=drive_link','_blank')">The Polar Express</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1OsyF2LKJqjtv0b2Xd9GWOLcYkzny3VZo/view?usp=drive_link','_blank')">The Super Mario Bros</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1YPdexiO1cHulGguqGvHKq0Grsnpdlbs1/view','_blank')">Top Gun</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1nmGDHktR96jkaYl2lf-d-XTtNtFh4PTv/view','_blank')">Top Gun 2</button>
+      <button onclick="window.open('https://drive.google.com/file/d/1HYeIrbf8A-vfvJsvYP59AQzG9l8nt03h/view','_blank')">Zootopia</button>
+    </div>
+  </div>
+
+  <div class="viewport">
+    <h1 id="big-clock">0:00 PM</h1>
+  </div>
+</div>
+
+<div id="battery">PWR: --%</div>
+
+<script>
+// --- UI Logic ---
+function filterMovies() {
+  let input = document.getElementById('searchBar').value.toLowerCase();
+  let btns = document.querySelectorAll('#movieList button');
+  btns.forEach(b => {
+    b.style.display = b.innerText.toLowerCase().includes(input) ? "block" : "none";
+  });
+}
+
+function updateClock() {
+  const now = new Date();
+  let h = now.getHours();
+  let m = now.getMinutes().toString().padStart(2, '0');
+  let ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  document.getElementById('big-clock').textContent = `${h}:${m} ${ampm}`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// --- Interactive Particle Script ---
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+let stars = [];
+const mouse = { x: null, y: null };
+let driftX = 0;
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+window.addEventListener('mousemove', (e) => {
+  mouse.x = e.x;
+  mouse.y = e.y;
+  driftX = (e.x - window.innerWidth / 2) / 60; 
+});
+
+window.addEventListener('mouseout', () => {
+  mouse.x = null;
+  mouse.y = null;
+  driftX = 0;
+});
+
+for (let i = 0; i < 200; i++) {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.5 + 0.5,
+    baseSpeed: Math.random() * 0.8 + 0.2,
+    active: 0 
+  });
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  stars.forEach(s => {
+    let isNear = false;
+    if (mouse.x !== null) {
+      let dx = mouse.x - s.x;
+      let dy = mouse.y - s.y;
+      let dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 80) isNear = true;
+    }
+
+    if (isNear) {
+      s.active = Math.min(s.active + 0.1, 1);
+    } else {
+      s.active = Math.max(s.active - 0.05, 0);
+    }
+
+    let speedMult = 1 + (s.active * 4);
+    s.y -= s.baseSpeed * speedMult;
+    s.x -= driftX * (s.baseSpeed / 2);
+
+    let cyanValue = Math.floor(s.active * 255);
+    ctx.fillStyle = `rgb(${255 - cyanValue}, 255, 255)`;
+    
+    if (s.active > 0) {
+      ctx.shadowBlur = s.active * 15;
+      ctx.shadowColor = "#00f2ff";
+    } else {
+      ctx.shadowBlur = 0;
+    }
+
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r + (s.active * 1), 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    if (s.y < -10) { 
+      s.y = canvas.height + 10; 
+      s.x = Math.random() * canvas.width;
+    }
+    if (s.x < -20) s.x = canvas.width + 20;
+    if (s.x > canvas.width + 20) s.x = -20;
+  });
+
+  requestAnimationFrame(animate);
+}
+animate();
+
+if (navigator.getBattery) {
+  navigator.getBattery().then(function(battery) {
+    const updateB = () => document.getElementById("battery").textContent = `PWR: ${Math.floor(battery.level * 100)}%`;
+    updateB();
+    battery.addEventListener('levelchange', updateB);
+  });
+}
+</script>
+
+</body>
+</html>

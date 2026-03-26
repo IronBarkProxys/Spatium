@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cherri | home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Updated Theme Palette */
+            --bg: #000000;
+            --bg-2: #0a0a0a;
+            --bg-3: #121212;
+            
+            /* Search Bar Border */
+            --search-border: #1c1c1c;
+            
+            /* General UI White & Bright Grey */
+            --border-grey: #2a2a2a;
+            --text-white: #ffffff;
+            --text-bright-grey: #e0e0e0; /* Made this much whiter */
+            --text-grey: #b0b0b0;        /* Slightly lighter grey */
+            
+            /* Pink Accent - Refined Gradient Range */
+            --cherri-pink-light: #ffb3d9;    /* Lighter top highlight */
+            --cherri-pink-mid: #f365ac;      /* Base pink */
+            --cherri-pink-soft-dark: #d64d92; /* Lighter "dark" point */
+            --accent-glow: rgba(243, 101, 172, 0.8);
+        }
+
+        #notheme {
+            display: none !important;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Figtree', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-white);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Particles Background - Grey Tones */
+        #particles-js {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            width: 90%;
+            max-width: 800px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Title with New Softer Gradient */
+        .hometitle {
+            font-size: 7.5rem;
+            font-weight: 900;
+            margin-bottom: 5px;
+            letter-spacing: -6px;
+            
+            /* Vertical Gradient: Light to Medium-Dark */
+            background: linear-gradient(
+                to bottom, 
+                var(--cherri-pink-light) 0%, 
+                var(--cherri-pink-mid) 50%, 
+                var(--cherri-pink-soft-dark) 100%
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            
+            /* Intense, Clean Glow */
+            filter: drop-shadow(0 0 12px var(--accent-glow)) 
+                    drop-shadow(0 0 25px rgba(243, 101, 172, 0.3));
+            
+            user-select: none;
+            line-height: 1;
+        }
+
+        #splash {
+            font-size: 1.1rem; /* Slightly larger for visibility */
+            color: var(--text-bright-grey); /* Whiter splash text */
+            margin-bottom: 40px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: lowercase;
+            min-height: 1.2rem;
+            opacity: 0.95;
+        }
+
+        /* Search Input */
+        .inputcontainer {
+            background: var(--bg-2);
+            border: 1px solid var(--search-border);
+            border-radius: 12px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+            max-width: 500px;
+            margin: 0 auto 40px auto;
+        }
+
+        .inputcontainer:focus-within {
+            border-color: var(--text-white);
+            background: var(--bg-3);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .inputcontainer input {
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--text-white);
+            font-size: 1.1rem;
+            width: 100%;
+        }
+
+        .inputcontainer input::placeholder {
+            color: var(--text-grey);
+            opacity: 0.6;
+        }
+
+        /* Shortcuts */
+        .flex-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .flex-row a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .shortcut-home {
+            background: var(--bg-2);
+            border: 1px solid var(--border-grey);
+            padding: 20px;
+            border-radius: 12px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .shortcut-home:hover {
+            background: var(--bg-3);
+            border-color: var(--text-white);
+            transform: translateY(-4px);
+        }
+
+        .shortcut-home i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: var(--text-white);
+        }
+
+        .shortcut-home h3 {
+            font-size: 0.65rem;
+            font-weight: 700; /* Bolder weight */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-bright-grey); /* Whiter shortcut labels */
+        }
+
+        #online {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-grey);
+            opacity: 0.7;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 600px) {
+            .hometitle { font-size: 5rem; }
+            .shortcut-home { width: 85px; height: 85px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <div class="container">
+        <h1 class="hometitle">Cherri</h1>
+        <p id="splash">loading...</p>
+        
+        <div class="inputcontainer">
+            <i class="fa-solid fa-magnifying-glass" style="color: var(--text-bright-grey);"></i>
+            <input type="text" id="homesearchlol" placeholder="Search..." autocomplete="off">
+        </div>
+
+        <div class="flex-row">
+            <a href="#"><div class="shortcut-home"><i class="fa-brands fa-nvidia"></i><h3>GF Now</h3></div></a>
+            <a href="#"><div class="shortcut-home"><i class="fa-brands fa-youtube"></i><h3>YouTube</h3></div></a>
+            <a href="#"><div class="shortcut-home"><i class="fa-brands fa-github"></i><h3>Github</h3></div></a>
+            <a href="#"><div class="shortcut-home"><i class="fa-solid fa-bolt"></i><h3>Fast</h3></div></a>
+            <a href="#"><div class="shortcut-home"><i class="fa-brands fa-discord"></i><h3>Discord</h3></div></a>
+        </div>
+    </div>
+
+    <p id="online">ENCRYPTED CONNECTION • 200 OK</p>
+
+    <script>
+        const pJS = function(tag_id) {
+            const canvas_el = document.createElement('canvas');
+            canvas_el.className = 'particles-js-canvas-el';
+            canvas_el.style.width = "100%";
+            canvas_el.style.height = "100%";
+            const canvas_parent = document.getElementById(tag_id);
+            canvas_parent.appendChild(canvas_el);
+
+            const ctx = canvas_el.getContext('2d');
+            let canvas_w, canvas_h;
+            let particles = [];
+
+            const init = () => {
+                canvas_w = canvas_el.width = canvas_el.offsetWidth;
+                canvas_h = canvas_el.height = canvas_el.offsetHeight;
+                particles = [];
+                for (let i = 0; i < 70; i++) {
+                    const shade = Math.floor(Math.random() * 40) + 50; 
+                    particles.push({
+                        x: Math.random() * canvas_w,
+                        y: Math.random() * canvas_h,
+                        vx: Math.random() * 0.8 + 0.4, 
+                        vy: Math.random() * 0.8 + 0.4,
+                        radius: Math.random() * 2 + 1,
+                        color: `rgb(${shade}, ${shade}, ${shade})`
+                    });
+                }
+            };
+
+            const draw = () => {
+                ctx.clearRect(0, 0, canvas_w, canvas_h);
+                
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x > canvas_w) p.x = 0;
+                    if (p.y > canvas_h) p.y = 0;
+                    if (p.x < 0) p.x = canvas_w;
+                    if (p.y < 0) p.y = canvas_h;
+
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                ctx.strokeStyle = "rgba(100, 100, 100, 0.05)";
+                ctx.lineWidth = 0.5;
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx*dx + dy*dy);
+                        if (dist < 100) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(draw);
+            };
+
+            window.addEventListener('resize', init);
+            init();
+            draw();
+        };
+
+        window.onload = () => {
+            pJS('particles-js');
+
+            const splashes = [
+                "ggs", 
+                "error: could not load splash", 
+                "best game site ever?", 
+                "7 8", 
+                "why do people even use gn-math?", 
+                "w o w", 
+                "partnered with everyone"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            ];
+            
+            document.getElementById('splash').textContent = splashes[Math.floor(Math.random() * splashes.length)];
+
+            document.getElementById("homesearchlol").addEventListener("keydown", (e) => {
+                if (e.key === "Enter") {
+                    const query = e.target.value.trim();
+                    if (query) window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+                }
+            });
+        };
+    </script>
+</body>
+</html>

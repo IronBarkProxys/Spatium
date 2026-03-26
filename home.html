@@ -1,36 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>cherri | home</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spatium | home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Updated Theme Palette */
             --bg: #000000;
             --bg-2: #0a0a0a;
             --bg-3: #121212;
-            
-            /* Search Bar Border */
-            --search-border: #1c1c1c;
-            
-            /* General UI White & Bright Grey */
+            --bg-4: #1a1a1a;
             --border-grey: #2a2a2a;
+            --search-border: #1c1c1c;
+            --accent: #f365ac;
+            --accent-glow: rgba(243, 101, 172, 0.4);
             --text-white: #ffffff;
-            --text-bright-grey: #e0e0e0; /* Made this much whiter */
-            --text-grey: #b0b0b0;        /* Slightly lighter grey */
+            --text-bright-grey: #e0e0e0;
+            --text-grey: #b0b0b0;
+            --nav-width: 75px;
+            --tooltip-bg: #1a1a1a;
             
-            /* Pink Accent - Refined Gradient Range */
-            --cherri-pink-light: #ffb3d9;    /* Lighter top highlight */
-            --cherri-pink-mid: #f365ac;      /* Base pink */
-            --cherri-pink-soft-dark: #d64d92; /* Lighter "dark" point */
-            --accent-glow: rgba(243, 101, 172, 0.8);
-        }
-
-        #notheme {
-            display: none !important;
+            /* Title Gradient */
+            --cherri-pink-light: #ffb3d9;
+            --cherri-pink-mid: #f365ac;
+            --cherri-pink-soft-dark: #d64d92;
         }
 
         * {
@@ -48,14 +43,11 @@
             width: 100vw;
             overflow: hidden;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
         }
 
-        /* Particles Background - Grey Tones */
+        /* Particles Background */
         #particles-js {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -63,13 +55,99 @@
             z-index: 1;
         }
 
-        /* Main Container */
+        /* Sidebar Styling */
+        #navbar {
+            position: relative;
+            z-index: 100;
+            width: var(--nav-width);
+            height: 100%;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-grey);
+            display: flex;
+            flex-direction: column;
+            padding: 25px 0;
+            align-items: center;
+        }
+
+        #navbar ul {
+            list-style: none;
+            width: 100%;
+            padding: 0 12px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            left: -100px; /* Entrance animation start */
+            transition: left 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        #navbar ul#section3nav { margin-top: auto; }
+
+        #navbar li {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            color: var(--text-grey);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+        }
+
+        #navbar li i {
+            font-size: 1.3rem;
+            transition: transform 0.2s ease;
+        }
+
+        #navbar li:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-white);
+        }
+
+        #navbar li.active {
+            background: rgba(243, 101, 172, 0.15);
+            color: var(--accent);
+        }
+
+        /* Tooltip Logic */
+        .tooltip {
+            position: absolute;
+            left: 70px;
+            background: var(--tooltip-bg);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--border-grey);
+            z-index: 1000;
+        }
+
+        #navbar li:hover .tooltip {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Main Content Container */
         .container {
+            flex-grow: 1;
             position: relative;
             z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            width: 90%;
-            max-width: 800px;
             animation: fadeIn 0.8s ease-out;
         }
 
@@ -78,40 +156,25 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Title with New Softer Gradient */
         .hometitle {
             font-size: 7.5rem;
             font-weight: 900;
             margin-bottom: 5px;
             letter-spacing: -6px;
-            
-            /* Vertical Gradient: Light to Medium-Dark */
-            background: linear-gradient(
-                to bottom, 
-                var(--cherri-pink-light) 0%, 
-                var(--cherri-pink-mid) 50%, 
-                var(--cherri-pink-soft-dark) 100%
-            );
+            background: linear-gradient(to bottom, var(--cherri-pink-light) 0%, var(--cherri-pink-mid) 50%, var(--cherri-pink-soft-dark) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            
-            /* Intense, Clean Glow */
-            filter: drop-shadow(0 0 12px var(--accent-glow)) 
-                    drop-shadow(0 0 25px rgba(243, 101, 172, 0.3));
-            
+            filter: drop-shadow(0 0 12px var(--accent-glow));
             user-select: none;
             line-height: 1;
         }
 
         #splash {
-            font-size: 1.1rem; /* Slightly larger for visibility */
-            color: var(--text-bright-grey); /* Whiter splash text */
+            font-size: 1.1rem;
+            color: var(--text-bright-grey);
             margin-bottom: 40px;
-            font-weight: 500;
             letter-spacing: 2px;
             text-transform: lowercase;
-            min-height: 1.2rem;
-            opacity: 0.95;
         }
 
         /* Search Input */
@@ -124,6 +187,7 @@
             align-items: center;
             gap: 15px;
             transition: all 0.3s ease;
+            width: 100%;
             max-width: 500px;
             margin: 0 auto 40px auto;
         }
@@ -131,7 +195,6 @@
         .inputcontainer:focus-within {
             border-color: var(--text-white);
             background: var(--bg-3);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
         }
 
         .inputcontainer input {
@@ -143,22 +206,12 @@
             width: 100%;
         }
 
-        .inputcontainer input::placeholder {
-            color: var(--text-grey);
-            opacity: 0.6;
-        }
-
         /* Shortcuts */
         .flex-row {
             display: flex;
             justify-content: center;
             gap: 12px;
             flex-wrap: wrap;
-        }
-
-        .flex-row a {
-            text-decoration: none;
-            color: inherit;
         }
 
         .shortcut-home {
@@ -173,6 +226,8 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
+            text-decoration: none;
+            color: inherit;
         }
 
         .shortcut-home:hover {
@@ -181,42 +236,87 @@
             transform: translateY(-4px);
         }
 
-        .shortcut-home i {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: var(--text-white);
-        }
+        .shortcut-home i { font-size: 24px; margin-bottom: 10px; }
+        .shortcut-home h3 { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-bright-grey); }
 
-        .shortcut-home h3 {
-            font-size: 0.65rem;
-            font-weight: 700; /* Bolder weight */
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-bright-grey); /* Whiter shortcut labels */
-        }
-
+        /* Bottom UI */
         #online {
             position: absolute;
             bottom: 25px;
-            left: 50%;
+            left: calc(50% + 37px); /* Compensate for sidebar */
             transform: translateX(-50%);
             color: var(--text-grey);
             opacity: 0.7;
             font-size: 0.75rem;
             letter-spacing: 1px;
+            z-index: 10;
         }
 
-        @media (max-width: 600px) {
-            .hometitle { font-size: 5rem; }
-            .shortcut-home { width: 85px; height: 85px; }
+        /* Notice UI */
+        .bluroverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            z-index: 999;
         }
+
+        .anotice {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: #111;
+            border: 1px solid var(--border-grey);
+            padding: 40px;
+            border-radius: 24px;
+            z-index: 1000;
+            max-width: 350px;
+            text-align: center;
+        }
+
+        .anotice h2 { margin-bottom: 10px; color: var(--accent); }
+        .anotice button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 12px;
+            margin-top: 25px;
+            cursor: pointer;
+        }
+        
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
     <div id="particles-js"></div>
 
+    <nav id="navbar">
+        <ul id="section1nav">
+            <li class="active" onclick="page('home')" data-target="home">
+                <i class="fa-solid fa-house"></i>
+                <div class="tooltip">Home</div>
+            </li>
+        </ul>
+        <ul id="section2nav">
+            <li onclick="page('games')" data-target="games"><i class="fa-solid fa-gamepad"></i><div class="tooltip">Games</div></li>
+            <li onclick="page('browse')" data-target="browse"><i class="fa-solid fa-globe"></i><div class="tooltip">Browser</div></li>
+            <li onclick="page('watch')" data-target="watch"><i class="fa-solid fa-video"></i><div class="tooltip">Movies & TV</div></li>
+            <li onclick="page('listen')" data-target="listen"><i class="fa-solid fa-music"></i><div class="tooltip">Music</div></li>
+            <li onclick="page('ai')" data-target="ai"><i class="fa-solid fa-wand-magic-sparkles"></i><div class="tooltip">AI</div></li>
+        </ul>
+        <ul id="section3nav">
+            <li onclick="page('profile')" data-target="profile"><i class="fa-solid fa-user-gear"></i><div class="tooltip">Profile</div></li>
+            <li onclick="page('settings')" data-target="settings"><i class="fa-solid fa-gear"></i><div class="tooltip">Settings</div></li>
+        </ul>
+    </nav>
+
     <div class="container">
-        <h1 class="hometitle">Cherri</h1>
+        <h1 class="hometitle">Spatium</h1>
         <p id="splash">loading...</p>
         
         <div class="inputcontainer">
@@ -225,28 +325,31 @@
         </div>
 
         <div class="flex-row">
-            <a href="#"><div class="shortcut-home"><i class="fa-brands fa-nvidia"></i><h3>GF Now</h3></div></a>
-            <a href="#"><div class="shortcut-home"><i class="fa-brands fa-youtube"></i><h3>YouTube</h3></div></a>
-            <a href="#"><div class="shortcut-home"><i class="fa-brands fa-github"></i><h3>Github</h3></div></a>
-            <a href="#"><div class="shortcut-home"><i class="fa-solid fa-bolt"></i><h3>Fast</h3></div></a>
-            <a href="#"><div class="shortcut-home"><i class="fa-brands fa-discord"></i><h3>Discord</h3></div></a>
+            <a href="#" class="shortcut-home"><i class="fa-brands fa-nvidia"></i><h3>GF Now</h3></a>
+            <a href="#" class="shortcut-home"><i class="fa-brands fa-youtube"></i><h3>YouTube</h3></a>
+            <a href="#" class="shortcut-home"><i class="fa-brands fa-github"></i><h3>Github</h3></a>
+            <a href="#" class="shortcut-home"><i class="fa-solid fa-bolt"></i><h3>Fast</h3></a>
+            <a href="#" class="shortcut-home"><i class="fa-brands fa-discord"></i><h3>Discord</h3></a>
         </div>
     </div>
 
     <p id="online">ENCRYPTED CONNECTION • 200 OK</p>
 
+    <div class="anotice hidden" id="noticeBox">
+        <h2>Notice</h2>
+        <p>SPATIUM // CHERRI V2 is here!</p>
+        <button onclick="closeNotice()">Understood</button>
+    </div>
+
     <script>
+        // Particle System Script
         const pJS = function(tag_id) {
             const canvas_el = document.createElement('canvas');
-            canvas_el.className = 'particles-js-canvas-el';
             canvas_el.style.width = "100%";
             canvas_el.style.height = "100%";
-            const canvas_parent = document.getElementById(tag_id);
-            canvas_parent.appendChild(canvas_el);
-
+            document.getElementById(tag_id).appendChild(canvas_el);
             const ctx = canvas_el.getContext('2d');
-            let canvas_w, canvas_h;
-            let particles = [];
+            let canvas_w, canvas_h, particles = [];
 
             const init = () => {
                 canvas_w = canvas_el.width = canvas_el.offsetWidth;
@@ -255,79 +358,67 @@
                 for (let i = 0; i < 70; i++) {
                     const shade = Math.floor(Math.random() * 40) + 50; 
                     particles.push({
-                        x: Math.random() * canvas_w,
-                        y: Math.random() * canvas_h,
-                        vx: Math.random() * 0.8 + 0.4, 
-                        vy: Math.random() * 0.8 + 0.4,
-                        radius: Math.random() * 2 + 1,
-                        color: `rgb(${shade}, ${shade}, ${shade})`
+                        x: Math.random() * canvas_w, y: Math.random() * canvas_h,
+                        vx: Math.random() * 0.8 + 0.4, vy: Math.random() * 0.8 + 0.4,
+                        radius: Math.random() * 2 + 1, color: `rgb(${shade}, ${shade}, ${shade})`
                     });
                 }
             };
 
             const draw = () => {
                 ctx.clearRect(0, 0, canvas_w, canvas_h);
-                
                 particles.forEach(p => {
-                    p.x += p.vx;
-                    p.y += p.vy;
-
-                    if (p.x > canvas_w) p.x = 0;
-                    if (p.y > canvas_h) p.y = 0;
-                    if (p.x < 0) p.x = canvas_w;
-                    if (p.y < 0) p.y = canvas_h;
-
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x > canvas_w) p.x = 0; if (p.y > canvas_h) p.y = 0;
                     ctx.fillStyle = p.color;
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                    ctx.fill();
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
                 });
-
-                ctx.strokeStyle = "rgba(100, 100, 100, 0.05)";
-                ctx.lineWidth = 0.5;
-                for (let i = 0; i < particles.length; i++) {
-                    for (let j = i + 1; j < particles.length; j++) {
-                        const dx = particles[i].x - particles[j].x;
-                        const dy = particles[i].y - particles[j].y;
-                        const dist = Math.sqrt(dx*dx + dy*dy);
-                        if (dist < 100) {
-                            ctx.beginPath();
-                            ctx.moveTo(particles[i].x, particles[i].y);
-                            ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.stroke();
-                        }
-                    }
-                }
                 requestAnimationFrame(draw);
             };
-
             window.addEventListener('resize', init);
-            init();
-            draw();
+            init(); draw();
         };
+
+        // Sidebar Page Logic
+        function page(target) {
+            document.querySelectorAll('#navbar li').forEach(li => li.classList.remove('active'));
+            const activeLi = document.querySelector(`li[data-target="${target}"]`);
+            if (activeLi) activeLi.classList.add('active');
+        }
+
+        function closeNotice() {
+            document.getElementById('noticeBox').classList.add('hidden');
+            const overlay = document.querySelector('.bluroverlay');
+            if (overlay) overlay.remove();
+        }
 
         window.onload = () => {
             pJS('particles-js');
 
-            const splashes = [
-                "ggs", 
-                "error: could not load splash", 
-                "best game site ever?", 
-                "7 8", 
-                "why do people even use gn-math?", 
-                "w o w", 
-                "partnered with everyone"
-                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-            ];
-            
+            // Splash Logic
+            const splashes = ["ggs", "error: could not load splash", "best game site ever?", "7 8", "w o w", "partnered with everyone"];
             document.getElementById('splash').textContent = splashes[Math.floor(Math.random() * splashes.length)];
 
+            // Search Logic
             document.getElementById("homesearchlol").addEventListener("keydown", (e) => {
                 if (e.key === "Enter") {
                     const query = e.target.value.trim();
                     if (query) window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
                 }
             });
+
+            // Sidebar Animations
+            ['section1nav', 'section2nav', 'section3nav'].forEach((id, index) => {
+                setTimeout(() => { document.getElementById(id).style.left = "0"; }, 150 + (index * 120));
+            });
+
+            // Notice simulation
+            setTimeout(() => {
+                document.getElementById('noticeBox').classList.remove('hidden');
+                const bluroverlay = document.createElement("div");
+                bluroverlay.classList.add("bluroverlay");
+                document.body.appendChild(bluroverlay);
+            }, 800);
         };
     </script>
 </body>

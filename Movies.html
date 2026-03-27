@@ -1,325 +1,462 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Spatium Movies Hub</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cherri | Movie Vault</title>
+    
+    <!-- Dependencies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<style>
-body {
-  margin: 0;
-  font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background: black;
-  color: white;
-  overflow: hidden;
-}
+    <style>
+        :root {
+            --bg: #000000;
+            --bg-2: #0a0a0a;
+            --bg-3: #121212;
+            --border-grey: #2a2a2a;
+            --accent: #f365ac;
+            --accent-glow: rgba(243, 101, 172, 0.4);
+            --text-white: #ffffff;
+            --text-grey: #b0b0b0;
+            --nav-width: 75px;
+            --cherri-pink-light: #ffb3d9;
+            --cherri-pink-mid: #f365ac;
+            --cherri-pink-soft-dark: #d64d92;
+        }
 
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Figtree', sans-serif;
+        }
 
-.container {
-  display: flex;
-  height: 100vh;
-  flex-direction: row; 
-}
+        body {
+            background-color: var(--bg);
+            color: var(--text-white);
+            height: 100vh; width: 100vw;
+            overflow: hidden;
+            display: flex;
+        }
 
-/* --- SIDEBAR --- */
-.sidebar {
-  width: 320px;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(15px);
-  padding: 25px;
-  overflow-y: auto;
-  border-right: 1px solid rgba(255,255,255,0.15);
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-}
+        #particles-js {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; z-index: 1;
+        }
 
-.sidebar::-webkit-scrollbar { width: 4px; }
-.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
+        #navbar {
+            position: relative; z-index: 100;
+            width: var(--nav-width); height: 100%;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-grey);
+            display: flex; flex-direction: column;
+            padding: 25px 0; align-items: center;
+        }
 
-h2 {
-  margin: 0 0 15px 0;
-  font-size: 12px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
-  text-align: left;
-}
+        #navbar ul {
+            list-style: none; width: 100%; padding: 0 12px; margin-bottom: 20px;
+            display: flex; flex-direction: column; gap: 12px;
+            position: relative; left: -100px;
+            transition: left 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
 
-/* --- SEARCH BAR --- */
-#searchBar {
-  width: 100%;
-  padding: 12px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 8px;
-  color: white;
-  margin-bottom: 20px;
-  outline: none;
-  font-family: inherit;
-  font-size: 13px;
-  box-sizing: border-box;
-  transition: border-color 0.3s;
-}
+        #navbar li {
+            position: relative; display: flex; align-items: center; justify-content: center;
+            width: 50px; height: 50px; border-radius: 14px;
+            color: var(--text-grey); cursor: pointer; transition: all 0.3s ease;
+        }
 
-#searchBar:focus {
-  border-color: white;
-}
+        #navbar li:hover { background: rgba(255, 255, 255, 0.08); color: var(--text-white); }
+        #navbar li.active { background: rgba(243, 101, 172, 0.15); color: var(--accent); }
 
-#movieList button {
-  display: block;
-  width: 100%;
-  margin: 4px 0;
-  padding: 12px;
-  background: transparent;
-  color: rgba(255,255,255,0.6);
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 8px;
-  font-size: 14px;
-  text-align: left;
-  font-family: inherit;
-}
+        .tooltip {
+            position: absolute; left: 70px; background: #1a1a1a;
+            color: white; padding: 8px 14px; border-radius: 8px; font-size: 0.85rem;
+            opacity: 0; transform: translateX(-10px); transition: all 0.2s ease;
+            border: 1px solid var(--border-grey); pointer-events: none; z-index: 1000;
+        }
 
-#movieList button:hover {
-  background: rgba(255,255,255,0.1);
-  color: white;
-  padding-left: 18px;
-}
+        #navbar li:hover .tooltip { opacity: 1; transform: translateX(0); }
 
-/* --- CENTER VIEWPORT --- */
-.viewport {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: none;
-}
+        main {
+            flex-grow: 1; position: relative; z-index: 10;
+            display: flex; flex-direction: column;
+            padding: 40px; overflow-y: auto;
+            align-items: center;
+        }
 
-#big-clock {
-  font-size: 140px;
-  font-weight: 100;
-  letter-spacing: -4px;
-  margin: 0;
-  user-select: none;
-  text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-}
+        .hometitle {
+            font-size: 4rem; font-weight: 900; margin-bottom: 10px; letter-spacing: -3px;
+            background: linear-gradient(to bottom, var(--cherri-pink-light) 0%, var(--cherri-pink-mid) 50%, var(--cherri-pink-soft-dark) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 12px var(--accent-glow)); line-height: 1;
+            text-align: center;
+        }
 
-#battery {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  font-size: 12px;
-  letter-spacing: 1px;
-  color: rgba(255,255,255,0.5);
-  background: rgba(255,255,255,0.05);
-  padding: 6px 12px;
-  border-radius: 4px;
-  border: 1px solid rgba(255,255,255,0.1);
-  z-index: 1000;
-  font-family: monospace;
-}
-</style>
+        .inputcontainer {
+            background: var(--bg-2); border: 1px solid var(--border-grey);
+            border-radius: 12px; padding: 14px 20px;
+            display: flex; align-items: center; gap: 15px;
+            transition: all 0.3s ease; width: 100%; max-width: 600px;
+            margin: 20px auto 40px auto;
+        }
+
+        .inputcontainer:focus-within { border-color: var(--accent); background: var(--bg-3); }
+        .inputcontainer input {
+            background: none; border: none; outline: none;
+            color: var(--text-white); font-size: 1rem; width: 100%;
+        }
+
+        .zone-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px; width: 100%; max-width: 1200px;
+        }
+
+        .zone-item {
+            background: var(--bg-2); border: 1px solid var(--border-grey);
+            border-radius: 16px; overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer; position: relative;
+            aspect-ratio: 2/3;
+        }
+
+        .zone-item:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(243, 101, 172, 0.2);
+        }
+
+        .zone-item img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        /* Hover Overlay */
+        .zone-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 20px 15px; transform: translateY(100%);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .zone-item:hover .zone-overlay {
+            transform: translateY(0);
+        }
+
+        .zone-overlay h4 {
+            font-size: 1rem; font-weight: 700; color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        #zoneViewer {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000; z-index: 2000; display: none; flex-direction: column;
+        }
+
+        .zone-header {
+            background: #0a0a0a; border-bottom: 1px solid var(--border-grey);
+            padding: 15px 25px; display: flex; align-items: center; justify-content: space-between;
+        }
+
+        #zoneName { color: var(--accent); font-weight: 700; letter-spacing: 1px; }
+
+        .zone-controls { display: flex; gap: 10px; }
+        .zone-controls button {
+            background: var(--bg-3); border: 1px solid var(--border-grey);
+            color: white; padding: 8px 15px; border-radius: 8px;
+            cursor: pointer; transition: 0.2s;
+        }
+
+        .zone-controls button:hover { background: var(--accent); border-color: var(--accent); }
+
+        #zoneFrame { flex-grow: 1; border: none; background: #000; }
+
+        #popupOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+            display: none; align-items: center; justify-content: center; z-index: 3000;
+        }
+
+        .popup {
+            background: #111; border: 1px solid var(--border-grey);
+            border-radius: 24px; width: 90%; max-width: 450px; overflow: hidden;
+        }
+
+        .popup-header {
+            background: linear-gradient(to right, var(--cherri-pink-mid), var(--cherri-pink-soft-dark));
+            padding: 20px; display: flex; justify-content: space-between; align-items: center;
+        }
+
+        #popupBody { padding: 30px; text-align: center; }
+
+        summary { color: var(--accent); margin: 30px 0 20px 0; font-size: 1.4rem; cursor: pointer; font-weight: 800; letter-spacing: -0.5px; }
+        
+        .loading-text { color: var(--text-grey); font-style: italic; margin-top: 20px; }
+    </style>
 </head>
-
 <body>
+    <div id="particles-js"></div>
 
-<canvas id="stars"></canvas>
+    <nav id="navbar">
+        <ul id="section1nav">
+            <li class="active" onclick="location.reload()"><i class="fa-solid fa-house"></i><div class="tooltip">Home</div></li>
+        </ul>
+        <ul id="section2nav">
+            <li><i class="fa-solid fa-fire-flame-curved"></i><div class="tooltip">Trending</div></li>
+            <li><i class="fa-solid fa-clapperboard"></i><div class="tooltip">All Movies</div></li>
+        </ul>
+        <ul id="section3nav">
+            <li id="settingsBtn"><i class="fa-solid fa-gear"></i><div class="tooltip">Settings</div></li>
+        </ul>
+    </nav>
 
-<div class="container">
-  <div class="sidebar">
-    <h2>Cinema Database</h2>
-    <input type="text" id="searchBar" placeholder="Search movies..." onkeyup="filterMovies()">
-    
-    <div id="movieList">
-      <button onclick="window.open('https://drive.google.com/drive/folders/1qeAJkq-B9pdqLXF1RfQWPbmAIOkPivSl','_blank')">Beavis and Butt-Head</button>
-      <button onclick="window.open('https://drive.google.com/drive/folders/1ZGPUs3433E9KdIAjRnOH3gfEXaq1rmcw?usp=drive_link','_blank')">Breaking Bad</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1BW7yv_y4uk99Nsjbc--z1beQ_bYYmUXk/view','_blank')">Captain Underpants</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1RoWQ2LZecPYvsZ48Sah7_xBvZzEHcXL1/view','_blank')">Cars</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1TKx-RUpz44aUVku1n-BJnJXXtjPIPOgV/view?usp=drive_link','_blank')">Cars 2</button>
-      <button onclick="window.open('https://drive.google.com/drive/folders/1iDvFUcwl4WvgAQgjPjrMDBarJ_I2NCSK','_blank')">Cobra Kai</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1siki1wYP3LpfjFpUT8Z9lJuJzl7MdBhX/view?usp=drive_link','_blank')">Despicable Me 4</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1J_WyATYoZH9qcaX5RNFrjrwmvySFPTom/view','_blank')">Fight Club</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1jP7PoHapLf_S_n75Afdc0RvzSwRqPcwm/view','_blank')">Finding Nemo</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1OyO1OdhtfwR883Uvi0QPP5iooGcxTVSY/view?usp=drive_link','_blank')">Five Nights At Freddy's</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1dW1XsOWtiL0mGHOFIB8n0rEhLPoa2buJ/view','_blank')">Five Nights At Freddy's 2</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1g_YZyeIbjua21PNL4ZLfeIzJx-givpPE/view','_blank')">Garfield</button>
-      <button onclick="window.open('https://docs.google.com/presentation/d/1ApQ-LQVYDqu2ttIkXDnNrg90C0l3PM6728PTqzBXtro/edit?usp=sharing','_blank')">Ghostbusters</button>
-      <button onclick="window.open('https://docs.google.com/presentation/d/1J2DzY7JL-DtNnJDKqQyetzzafDDDMcamqAyDEMtyp0A/edit?usp=sharing','_blank')">Ghostbusters 2</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1pP6Kkr-1WmcWWt2IKEIUv7RTkgMLXTmp/view?usp=drive_link','_blank')">Godzilla (2014)</button>
-      <button onclick="window.open('https://drive.google.com/file/d/15cslPKo6esN4D6oaMaRjcC3_eIwFDX4e/view?usp=drive_link','_blank')">Godzilla Minus One</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1emaZNk8shYA98Sq_K0x_iVT78_coOByR/view?usp=sharing','_blank')">Godzilla Vs Kong</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1xlVHznoHc3cczI4emQUNE0vuyD2H_x9g/view?usp=drive_link','_blank')">Godzilla: King Of Monsters</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1jucPocCb8aq23Bh-GFLcniAk-k5UU-wC/view','_blank')">Good Burger</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1l7dSSnBmw9Fnku5lxl7zYk7CsQa4JU3d/view','_blank')">Home Alone</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1Aj4Ys3ofogKhxEAMh6PUncpYF_OHZ_ZK/view?usp=drive_link','_blank')">Home Alone 2</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1NkmCNf5CUML_KZvNi4fgGKA8r7fpXIdd/view?usp=drive_link','_blank')">Hoppers</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1gZ4FVX5GLCSv2-i_sabXWhgl9u_3FeOB/view','_blank')">Hotel Transylvania</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1LZI5E52J_R_Cx6f3EXLl-BAn6vuhUduD/view','_blank')">Hotel Transylvania 2</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1ys7CQlyywTD5YlMeCpfp0ThltWcMH99E/view?usp=drive_link','_blank')">Jaws</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1AJqTDT_mbZLju6adLt6Dba73cdRmuDrC/view?usp=drive_link','_blank')">Leo</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1GLqywDPqfZSLmLAiKC8j2l0o52cAGP8S/view','_blank')">Oppenheimer</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1Mm4-trdWWnxtYyAfkIj--2SXem5HeIi2/view','_blank')">Princes And The Frog</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1p7bqEnvENeHTxRjKKONSpNh5murfawck/view','_blank')">Puss In Boots</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1-4M0OT7lpvxc4BdoFp9rEcBiV6zXL_Gl/view','_blank')">Ratatouille</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1QQx9ogqUJzS3G8GIZXLBAhgx2s2Ol2zZ/view?usp=drive_link','_blank')">Red One</button>
-      <button onclick="window.open('https://drive.google.com/file/d/14UKIE2jtMo0qFPbomlXVKsKA5l81W4OE/view','_blank')">Scream</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1XXmiwcrUSMi5rn90xr5hnBK6La8hBkhz/view','_blank')">Scream 2</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1O1mkNEfq98w2Zrxyg6XLCfJI_bmfwWp_/view','_blank')">Scream 3</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1t4kNJPFCytvx2ktdw5n6xBOtRNnBm5RJ/view','_blank')">Scream 4</button>
-      <button onclick="window.open('https://drive.google.com/file/d/152-KeFdBMBscGESWVWLuDS-YUf8VsRCd/view','_blank')">Scream 5</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1vL8qngL5I26Ga3mO25ByucDByagVgARl/view?usp=drive_link','_blank')">Scream 6</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1RtaN8_Xsodf4Ub5K_yRp6eOx62tbj7Ap/view?usp=drive_link','_blank')">Scream 7</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1VnID4qhUDF8EOWLQJ3Z1K-M0AwoOTlFt/view?usp=drive_link','_blank')">Shin Godzilla</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1_pQ3kbz_a8l3B7SKfdP9dYQwKax0WHUD/view?usp=drive_link','_blank')">South Park</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1QK9RHd2T-ijthIL7A6NQvRztPkTx8NtN/view','_blank')">Space Jam</button>
-      <button onclick="window.open('https://drive.google.com/file/u/0/d/17hubcXZlc8AQCick-5kdB11mpEQlM1Zw/view','_blank')">Space Jam 2</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1vPNUTkubVVmguVfwstRQm5xgbkRRii6z/view','_blank')">Spiderman: Far From Home</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1jGHx1i3EqHKmQmE42APmxUk4bYHrINQ_/view','_blank')">Spiderman: Homecoming</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1V3Bq0lrDQUxJay5DDs3gK69ZvRNb1j2u/view','_blank')">Spiderman: Into The Spider-Verse</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1mUF4PcT0_ZKofV0KHHdjxgTQdhF2BliQ/view','_blank')">Spiderman: No Way Home</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1REZiyOnZ6sDEzHpycx2KtU_vFP35CB6Z/view?usp=drive_link','_blank')">The Sandlot</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1_pQ3kbz_a8l3B7SKfdP9dYQwKax0WHUD/view?usp=drive_link','_blank')">Terrifier</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1_Jjo7rOcCkYt3UryVkV2XvTfrL4QvHTE/view?usp=drive_link','_blank')">Terrifier 2</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1sAj4FqfEIzHPIW7ZUPGGSOFTTaJr5AGI/view?usp=drive_link','_blank')">Terrifier 3</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1_pQ3kbz_a8l3B7SKfdP9dYQwKax0WHUD/view?usp=drive_link','_blank')">Thanksgiving</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1GzovJHzUxtS6XQQiPLVXj92hWZ7PTABa/view','_blank')">The Fast And The Furious</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1kipfsWxPV_DX1o_3BQrhLDsbk45RZDDP/view','_blank')">The Fast And The Furious: Tokyo Drift</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1a-NbGEHxpO6Y_RtoAKjKsgBeB-1Zah7k/view?usp=drive_link','_blank')">The Polar Express</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1OsyF2LKJqjtv0b2Xd9GWOLcYkzny3VZo/view?usp=drive_link','_blank')">The Super Mario Bros</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1YPdexiO1cHulGguqGvHKq0Grsnpdlbs1/view','_blank')">Top Gun</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1nmGDHktR96jkaYl2lf-d-XTtNtFh4PTv/view','_blank')">Top Gun 2</button>
-      <button onclick="window.open('https://drive.google.com/file/d/1HYeIrbf8A-vfvJsvYP59AQzG9l8nt03h/view','_blank')">Zootopia</button>
+    <main>
+        <h1 class="hometitle">Cherri</h1>
+        
+        <div class="inputcontainer">
+            <i class="fa-solid fa-magnifying-glass" style="color: var(--accent);"></i>
+            <input type="text" id="searchBar" placeholder="Search for a movie..." oninput="filterMovies()">
+        </div>
+
+        <details open>
+            <summary id="featuredSummary">Featured Vaults</summary>
+            <div id="featuredMovies" class="zone-container"></div>
+        </details>
+
+        <details open>
+            <summary id="allSummary">All Cinema</summary>
+            <div id="container" class="zone-container">
+                <p class="loading-text">Loading Cherri Cinema Database...</p>
+            </div>
+        </details>
+    </main>
+
+    <div id="zoneViewer">
+        <div class="zone-header">
+            <div class="zone-title">
+                <h2 id="zoneName">Movie Name</h2>
+            </div>
+            <div class="zone-controls">
+                <button id="openExternalBtn" title="Open in new tab"><i class="fa-solid fa-up-right-from-square"></i></button>
+                <button onclick="fullscreenZone()"><i class="fa-solid fa-expand"></i></button>
+                <button onclick="closeZone()">CLOSE</button>
+            </div>
+        </div>
+        <iframe id="zoneFrame" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
     </div>
-  </div>
 
-  <div class="viewport">
-    <h1 id="big-clock">0:00 PM</h1>
-  </div>
-</div>
+    <div id="popupOverlay">
+        <div class="popup">
+            <div class="popup-header">
+                <h3 id="popupTitle">Settings</h3>
+                <button onclick="closePopup()" style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
+            </div>
+            <div id="popupBody"></div>
+        </div>
+    </div>
 
-<div id="battery">PWR: --%</div>
+    <script>
+        const container = document.getElementById('container');
+        const featuredContainer = document.getElementById('featuredMovies');
+        const zoneViewer = document.getElementById('zoneViewer');
+        const zoneFrame = document.getElementById('zoneFrame');
+        const searchBar = document.getElementById('searchBar');
+        const openExternalBtn = document.getElementById('openExternalBtn');
+        let currentUrl = "";
 
-<script>
-// --- UI Logic ---
-function filterMovies() {
-  let input = document.getElementById('searchBar').value.toLowerCase();
-  let btns = document.querySelectorAll('#movieList button');
-  btns.forEach(b => {
-    b.style.display = b.innerText.toLowerCase().includes(input) ? "block" : "none";
-  });
-}
+        // Movie Database
+        let movieDatabase = [
+            { name: "Hoppers", featured: true, cover: "", url: "https://drive.google.com/file/d/1NkmCNf5CUML_KZvNi4fgGKA8r7fpXIdd/view" },
+            { name: "Scream 7", featured: true, cover: "", url: "" },
+            { name: "Sinners", featured: true, cover: "", url: "" },
+            { name: "F1", featured: true, cover: "", url: "" },
+            { name: "Sonic 2", featured: true, cover: "", url: "https://drive.google.com/file/d/13YPdlfR1BTzXfqwmfbzfiuPycjQsh0Yb/view?usp=drive_link" },
+            { name: "Top Gun 2", featured: true, cover: "", url: "https://drive.google.com/file/d/1nmGDHktR96jkaYl2lf-d-XTtNtFh4PTv/view" },
+            { name: "The Goonies", featured: true, cover: "", url: "https://drive.google.com/file/d/18sSKADZamG3w8ZaanP93XU4yHSVKzApM/view?usp=drive_link" },
+            { name: "Home Alone", featured: true, cover: "", url: "https://docs.google.com/presentation/d/1_q-yisq08_MYDWpscSHS5pU_m__0S05Sf_cdko3IDG4/edit?usp=sharing" },
+            { name: "Jurassic World", featured: true, cover: "", url: "" },
+            { name: "Cars", featured: true, cover: "", url: "" },
+            { name: "Knuckles", featured: false, cover: "", url: "" },
+            { name: "Ghostbusters", featured: false, cover: "", url: "https://drive.google.com/file/d/1edyW5bLTEj-owwCABSFyigW0H02ttXtV/view?usp=drive_link" },
+            { name: "Ghostbusters 2", featured: false, cover: "", url: "https://drive.google.com/file/d/1Uw2diSNDi0H2UwstoO9h-WpE2GtLOmTC/view?usp=drive_link" },
+            { name: "Ghostbusters Afterlife", featured: false, cover: "", url: "https://drive.google.com/file/d/1QZNf2oysHR017fWLeCSoHRb1iKKdowMK/view?usp=drive_link" },
+            { name: "Ghostbusters Frozen Empire", featured: false, cover: "", url: "" },
+            { name: "Jaws", featured: false, cover: "", url: "https://drive.google.com/file/d/1ys7CQlyywTD5YlMeCpfp0ThltWcMH99E/view?usp=drive_link" },
+            { name: "Deadpool", featured: false, cover: "", url: "https://drive.google.com/file/d/17QTeEVPc-E4YsWm-tQ4toG-DpLefpx4E/view?usp=drive_link" },
+            { name: "Willy Wonka And The Chocolate Factory", featured: false, cover: "", url: "https://drive.google.com/file/d/1hYH5eFoapAh_9LJZwNREIta4hWBvBAdK/view?usp=drive_link" },
+            { name: "Charlie And The Chocolate Factory", featured: false, cover: "", url: "https://drive.google.com/file/d/1eaQHnnwolzvKHEvs91RO-S2CpNvhmiU5/view?usp=drive_link" },
+            { name: "Cars 2", featured: false, cover: "", url: "https://drive.google.com/file/d/1TKx-RUpz44aUVku1n-BJnJXXtjPIPOgV/view?usp=drive_link" },
+            { name: "Jurassic Park", featured: false, cover: "", url: "https://drive.google.com/file/d/1bB65cEOgbz2Y0ic6nGDZfUQlECXBk2qt/view?usp=drive_link" },
+            { name: "Jurassic Park 2", featured: false, cover: "", url: "https://drive.google.com/file/d/15okru5XkkghrsKUfQJaFUTUHxHF_o9a1/view?usp=drive_link" },
+            { name: "Jurassic Park 3", featured: false, cover: "", url: "https://drive.google.com/file/d/1W9RJS1N_rBcNFAA73Y3B6leLhhjXXY9k/view?usp=drive_link" },
+            { name: "Jurassic World Fallen Kingdom", featured: false, cover: "", url: "https://drive.google.com/file/d/1C7BtzwkL942hGjSl1wLUoIyASGe1kqQK/view?usp=drive_link" },
+            { name: "Jurassic World Dominion", featured: false, cover: "", url: "https://drive.google.com/file/d/1x84uwAQzm7-j9MhDdNF5sb_jCRQFhjIa/view?usp=drive_link" },
+            { name: "Sonic", featured: false, cover: "", url: "https://drive.google.com/file/d/1HaXeNylNfZXhRudGTNLUWtrN-oAmone4/view?usp=drive_link" },
+            { name: "Sonic 3", featured: false, cover: "", url: "" },
+            { name: "Scream 1", featured: false, cover: "", url: "https://drive.google.com/file/d/16958fPlrXafMQaHr7vSG37EU7N2jL3v4/view?usp=drive_link" },
+            { name: "Scream 2", featured: false, cover: "", url: "https://drive.google.com/file/d/1Gz7z2Wm07j39m-fDxfWR6Fp6o0ihf5hW/view?usp=drive_link" },
+            { name: "Scream 3", featured: false, cover: "", url: "https://drive.google.com/file/d/1tE0CPtGbsTRtal-6ZCIVxHDczRRr3ce0/view?usp=drive_link" },
+            { name: "Scream 4", featured: false, cover: "", url: "https://drive.google.com/file/d/1HfyVEE2oFq1X8dHMWr5xJmMyHo79l7iG/view" },
+            { name: "Scream 5", featured: false, cover: "", url: "https://drive.google.com/file/d/163Ga2ToZpQ_HU4wMbXVoWxOQG6HUfvUw/view?usp=drive_link" },
+            { name: "Scream 6", featured: false, cover: "", url: "https://drive.google.com/file/d/1vL8qngL5I26Ga3mO25ByucDByagVgARl/view?usp=drive_link" },
+            { name: "Home Alone 2", featured: false, cover: "", url: "https://drive.google.com/file/d/1Aj4Ys3ofogKhxEAMh6PUncpYF_OHZ_ZK/view?usp=drive_link" },
+            { name: "Cobra Kai", featured: false, cover: "", url: "" },
+            { name: "Squid Games", featured: false, cover: "", url: "" },
+            { name: "Breaking Bad", featured: false, cover: "", url: "" },
+            { name: "Dexter", featured: false, cover: "", url: "" },
+            { name: "South Park", featured: false, cover: "", url: "" },
+            { name: "South Park Cred", featured: false, cover: "", url: "" },
+            { name: "Transformers", featured: false, cover: "", url: "" },
+            { name: "Terrifier", featured: false, cover: "", url: "https://drive.google.com/file/d/1_pQ3kbz_a8l3B7SKfdP9dYQwKax0WHUD/view?usp=drive_link" },
+            { name: "Terrifier 2", featured: false, cover: "", url: "https://drive.google.com/file/d/1_Jjo7rOcCkYt3UryVkV2XvTfrL4QvHTE/view?usp=drive_link" },
+            { name: "Terrifier 3", featured: false, cover: "", url: "https://drive.google.com/file/d/1sAj4FqfEIzHPIW7ZUPGGSOFTTaJr5AGI/view?usp=drive_link" },
+            { name: "Spiderman", featured: false, cover: "", url: "https://drive.google.com/file/d/14BaJhmDRr3veoH436CKdPDp9r-j5214I/view?usp=drive_link" },
+            { name: "Spiderman 2", featured: false, cover: "", url: "https://drive.google.com/file/d/1F7SsjFpbXSqs51gb88xRmRNTuWBth9Wu/view?usp=drive_link" },
+            { name: "Spiderman 3", featured: false, cover: "", url: "https://drive.google.com/file/d/1Vb9n1P8wsXVqXOcLPZDZIll8ofa4V4G4/view?usp=drive_link" },
+            { name: "The Amazing Spiderman", featured: false, cover: "", url: "https://drive.google.com/file/d/1jom1D1Dc3eF3ZmCXVzh8lhlXrFGOBpXK/view?usp=drive_link" },
+            { name: "The Amazing Spiderman 2", featured: false, cover: "", url: "https://drive.google.com/file/d/1GLmG41OhRt9YfRa4r5nwvw8hCIS1Sofv/view?usp=drive_link" },
+            { name: "Spiderman Homecoming", featured: false, cover: "", url: "https://drive.google.com/file/d/11oocQQ3xP9VGk_YlGVjKkCffbXXvyIEi/view?usp=drive_link" },
+            { name: "Spiderman Far From Home", featured: false, cover: "", url: "https://drive.google.com/file/d/1b6eC9kZ9qWSlUnduaER2rfEfB5UcXj0e/view?usp=drive_link" },
+            { name: "Spiderman No Way Home", featured: false, cover: "", url: "https://drive.google.com/file/d/1XLkr2YEnq4pwMZ-8A5UXD4DI6vco-SGb/view?usp=drive_link" },
+            { name: "Wonka", featured: false, cover: "", url: "https://drive.google.com/file/d/1cVPQwz-8_TFyAv0Rsjk51cLND67FonFY/view?usp=drive_link" },
+            { name: "Five Nights At Freddy's", featured: false, cover: "", url: "https://drive.google.com/file/d/1OyO1OdhtfwR883Uvi0QPP5iooGcxTVSY/view?usp=drive_link" },
+            { name: "Five Nights At Freddy's 2", featured: false, cover: "", url: "" },
+            { name: "Tiwster", featured: false, cover: "", url: "" },
+            { name: "Godzilla", featured: false, cover: "", url: "https://drive.google.com/file/d/1rin01fF2JeTiqBkvae2SJLZIuv2UUp2v/view?usp=drive_link" },
+            { name: "Godzilla Vs Kong", featured: false, cover: "", url: "https://drive.google.com/file/d/1emaZNk8shYA98Sq_K0x_iVT78_coOByR/view?usp=sharing" },
+            { name: "Godzilla - King Of The Monsters", featured: false, cover: "", url: "https://drive.google.com/file/d/1xlVHznoHc3cczI4emQUNE0vuyD2H_x9g/view?usp=drive_link" },
+            { name: "Shin Godzilla", featured: false, cover: "", url: "https://drive.google.com/file/d/1VnID4qhUDF8EOWLQJ3Z1K-M0AwoOTlFt/view?usp=drive_link" },
+            { name: "Godzilla 1985", featured: false, cover: "", url: "https://drive.google.com/file/d/1pP6Kkr-1WmcWWt2IKEIUv7RTkgMLXTmp/view?usp=drive_link" },
+            { name: "Super Mario Bros", featured: false, cover: "", url: "https://drive.google.com/file/d/1OsyF2LKJqjtv0b2Xd9GWOLcYkzny3VZo/view?usp=drive_link" },
+            { name: "Zootopia", featured: false, cover: "", url: "https://drive.google.com/file/d/1HYeIrbf8A-vfvJsvYP59AQzG9l8nt03h/view?usp=drive_link" },
+            { name: "The Lorax", featured: false, cover: "", url: "https://drive.google.com/file/d/1Kl4ieKALPoEYbllsRy7V8AYiPtJATg7W/view?usp=drive_link" },
+            { name: "Godzilla Minus One", featured: false, cover: "", url: "https://drive.google.com/file/d/15cslPKo6esN4D6oaMaRjcC3_eIwFDX4e/view?usp=drive_link" },
+            { name: "Moana", featured: false, cover: "", url: "https://drive.google.com/file/d/1EsX8k7nfYQrzC6apqJqnyfH7HLAHl31G/view?usp=drive_link" },
+            { name: "Toy Story", featured: false, cover: "", url: "" },
+            { name: "Toy Story 2", featured: false, cover: "", url: "" },
+            { name: "Toy Story 3", featured: false, cover: "", url: "" },
+            { name: "Toy Story 4", featured: false, cover: "", url: "" },
+            { name: "Deadpool & Wolverine", featured: false, cover: "", url: "" },
+            { name: "Star Wars: Episode I - The Phantom Menace", featured: false, cover: "", url: "" },
+            { name: "Star Wars: Episode III – Revenge of the Sith", featured: false, cover: "", url: "" },
+            { name: "Star Wars: Episode II - Attack of the Clones", featured: false, cover: "", url: "" },
+            { name: "Penguins of Madagascar", featured: false, cover: "", url: "" },
+            { name: "Topgun", featured: false, cover: "", url: "https://drive.google.com/file/d/1YPdexiO1cHulGguqGvHKq0Grsnpdlbs1/view" },
 
-function updateClock() {
-  const now = new Date();
-  let h = now.getHours();
-  let m = now.getMinutes().toString().padStart(2, '0');
-  let ampm = h >= 12 ? 'PM' : 'AM';
-  h = h % 12 || 12;
-  document.getElementById('big-clock').textContent = `${h}:${m} ${ampm}`;
-}
-setInterval(updateClock, 1000);
-updateClock();
 
-// --- Interactive Particle Script ---
-const canvas = document.getElementById("stars");
-const ctx = canvas.getContext("2d");
-let stars = [];
-const mouse = { x: null, y: null };
-let driftX = 0;
+        ];
 
-function resize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resize);
-resize();
+        // Sort Database Alphabetically once at startup
+        movieDatabase.sort((a, b) => a.name.localeCompare(b.name));
 
-window.addEventListener('mousemove', (e) => {
-  mouse.x = e.x;
-  mouse.y = e.y;
-  driftX = (e.x - window.innerWidth / 2) / 60; 
-});
+        // Particle background logic
+        const pJS = function(tag_id) {
+            const canvas_el = document.createElement('canvas');
+            canvas_el.style.width = "100%"; canvas_el.style.height = "100%";
+            document.getElementById(tag_id).appendChild(canvas_el);
+            const ctx = canvas_el.getContext('2d');
+            let canvas_w, canvas_h, particles = [];
+            const init = () => {
+                canvas_w = canvas_el.width = canvas_el.offsetWidth;
+                canvas_h = canvas_el.height = canvas_el.offsetHeight;
+                particles = [];
+                for (let i = 0; i < 60; i++) {
+                    const shade = Math.floor(Math.random() * 50) + 40; 
+                    particles.push({
+                        x: Math.random() * canvas_w, 
+                        y: Math.random() * canvas_h,
+                        vx: Math.random() * 1.5 + 0.5, 
+                        vy: Math.random() * 1.5 + 0.5,
+                        radius: Math.random() * 2 + 1, 
+                        color: `rgb(${shade}, ${shade}, ${shade})`
+                    });
+                }
+            };
+            const draw = () => {
+                ctx.clearRect(0, 0, canvas_w, canvas_h);
+                particles.forEach(p => {
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x > canvas_w) p.x = 0; 
+                    if (p.y > canvas_h) p.y = 0;
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
+                });
+                requestAnimationFrame(draw);
+            };
+            window.addEventListener('resize', init);
+            init(); draw();
+        };
 
-window.addEventListener('mouseout', () => {
-  mouse.x = null;
-  mouse.y = null;
-  driftX = 0;
-});
+        function displayMovies(data, target) {
+            target.innerHTML = "";
+            data.forEach(movie => {
+                const item = document.createElement("div");
+                item.className = "zone-item";
+                item.innerHTML = `
+                    <img src="${movie.cover}" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300?text=No+Cover'">
+                    <div class="zone-overlay">
+                        <h4>${movie.name}</h4>
+                    </div>
+                `;
+                item.onclick = () => openMovie(movie);
+                target.appendChild(item);
+            });
+        }
 
-for (let i = 0; i < 200; i++) {
-  stars.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    r: Math.random() * 1.5 + 0.5,
-    baseSpeed: Math.random() * 0.8 + 0.2,
-    active: 0 
-  });
-}
+        function filterMovies() {
+            const query = searchBar.value.toLowerCase();
+            const filtered = movieDatabase.filter(m => m.name.toLowerCase().includes(query));
+            displayMovies(filtered, container);
+        }
 
-function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
-  stars.forEach(s => {
-    let isNear = false;
-    if (mouse.x !== null) {
-      let dx = mouse.x - s.x;
-      let dy = mouse.y - s.y;
-      let dist = Math.sqrt(dx*dx + dy*dy);
-      if (dist < 80) isNear = true;
-    }
+        function openMovie(movie) {
+            currentUrl = movie.url;
+            zoneFrame.src = movie.url;
+            document.getElementById('zoneName').textContent = movie.name;
+            zoneViewer.style.display = "flex";
+        }
 
-    if (isNear) {
-      s.active = Math.min(s.active + 0.1, 1);
-    } else {
-      s.active = Math.max(s.active - 0.05, 0);
-    }
+        function openExternalNow() {
+            if (currentUrl) window.open(currentUrl, '_blank');
+        }
 
-    let speedMult = 1 + (s.active * 4);
-    s.y -= s.baseSpeed * speedMult;
-    s.x -= driftX * (s.baseSpeed / 2);
+        openExternalBtn.onclick = openExternalNow;
 
-    let cyanValue = Math.floor(s.active * 255);
-    ctx.fillStyle = `rgb(${255 - cyanValue}, 255, 255)`;
-    
-    if (s.active > 0) {
-      ctx.shadowBlur = s.active * 15;
-      ctx.shadowColor = "#00f2ff";
-    } else {
-      ctx.shadowBlur = 0;
-    }
+        function closeZone() {
+            zoneViewer.style.display = "none";
+            zoneFrame.src = "about:blank";
+            currentUrl = "";
+        }
 
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r + (s.active * 1), 0, Math.PI * 2);
-    ctx.fill();
-    ctx.shadowBlur = 0;
+        function fullscreenZone() {
+            if (zoneFrame.requestFullscreen) zoneFrame.requestFullscreen();
+            else if (zoneFrame.webkitRequestFullscreen) zoneFrame.webkitRequestFullscreen();
+        }
 
-    if (s.y < -10) { 
-      s.y = canvas.height + 10; 
-      s.x = Math.random() * canvas.width;
-    }
-    if (s.x < -20) s.x = canvas.width + 20;
-    if (s.x > canvas.width + 20) s.x = -20;
-  });
+        function closePopup() { document.getElementById('popupOverlay').style.display = "none"; }
 
-  requestAnimationFrame(animate);
-}
-animate();
+        window.onload = () => {
+            pJS('particles-js');
+            displayMovies(movieDatabase, container);
+            displayMovies(movieDatabase.filter(m => m.featured), featuredContainer);
+            
+            document.getElementById('allSummary').textContent = `All Cinema (${movieDatabase.length})`;
+            document.getElementById('featuredSummary').textContent = `Featured Vaults (${movieDatabase.filter(m => m.featured).length})`;
 
-if (navigator.getBattery) {
-  navigator.getBattery().then(function(battery) {
-    const updateB = () => document.getElementById("battery").textContent = `PWR: ${Math.floor(battery.level * 100)}%`;
-    updateB();
-    battery.addEventListener('levelchange', updateB);
-  });
-}
-</script>
+            ['section1nav', 'section2nav', 'section3nav'].forEach((id, i) => {
+                setTimeout(() => { document.getElementById(id).style.left = "0"; }, 150 + (i * 120));
+            });
+        };
 
+        document.getElementById('settingsBtn').onclick = () => {
+            document.getElementById('popupOverlay').style.display = "flex";
+            document.getElementById('popupBody').innerHTML = `
+                <p style="color:#888; margin-bottom:20px;">Cherri Cinema V2 Configuration</p>
+                <button onclick="location.reload()" style="background:var(--accent); color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; width:100%;">Refresh Gallery</button>
+            `;
+        };
+    </script>
 </body>
 </html>

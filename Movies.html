@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Spatium | Cherri Cinema</title>
+    <title>Spatium</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -21,13 +21,10 @@
             --text-grey: #b0b0b0;
             --nav-width: 75px;
             --tooltip-bg: #1a1a1a;
-            
-            /* Title Gradient */
             --cherri-pink-light: #ffb3d9;
             --cherri-pink-mid: #f365ac;
             --cherri-pink-soft-dark: #d64d92;
         }
-
         * {
             margin: 0;
             padding: 0;
@@ -35,7 +32,6 @@
             font-family: 'Figtree', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
-
         body {
             background-color: var(--bg);
             color: var(--text-white);
@@ -44,8 +40,6 @@
             overflow: hidden;
             display: flex;
         }
-
-        /* Particles Background */
         #particles-js {
             position: fixed;
             top: 0;
@@ -55,8 +49,6 @@
             z-index: 1;
             pointer-events: none;
         }
-
-        /* Sidebar Styling */
         #navbar {
             position: relative;
             z-index: 100;
@@ -70,7 +62,6 @@
             padding: 25px 0;
             align-items: center;
         }
-
         #navbar ul {
             list-style: none;
             width: 100%;
@@ -83,9 +74,7 @@
             left: -100px;
             transition: left 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
-
         #navbar ul#section3nav { margin-top: auto; }
-
         #navbar li {
             position: relative;
             display: flex;
@@ -99,19 +88,15 @@
             transition: all 0.3s ease;
             margin: 0 auto;
         }
-
         #navbar li i { font-size: 1.3rem; }
-
         #navbar li:hover {
             background: rgba(255, 255, 255, 0.08);
             color: var(--text-white);
         }
-
         #navbar li.active {
             background: rgba(243, 101, 172, 0.15);
             color: var(--accent);
         }
-
         .tooltip {
             position: absolute;
             left: 70px;
@@ -129,13 +114,10 @@
             border: 1px solid var(--border-grey);
             z-index: 1000;
         }
-
         #navbar li:hover .tooltip {
             opacity: 1;
             transform: translateX(0);
         }
-
-        /* Main Viewport */
         main {
             flex-grow: 1;
             position: relative;
@@ -148,10 +130,8 @@
             scrollbar-width: thin;
             scrollbar-color: var(--accent) transparent;
         }
-
         main::-webkit-scrollbar { width: 6px; }
         main::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
-
         .hometitle {
             font-size: clamp(3rem, 10vw, 5rem);
             font-weight: 900;
@@ -163,8 +143,6 @@
             filter: drop-shadow(0 0 12px var(--accent-glow));
             user-select: none;
         }
-
-        /* Search Area */
         .inputcontainer {
             background: var(--bg-2);
             border: 1px solid var(--search-border);
@@ -179,12 +157,10 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 30px rgba(0,0,0,0.3);
         }
-
         .inputcontainer:focus-within {
             border-color: var(--accent);
             background: var(--bg-3);
         }
-
         .inputcontainer input {
             background: none;
             border: none;
@@ -193,15 +169,12 @@
             font-size: 1.1rem;
             width: 100%;
         }
-
-        /* Cinema Sections */
         details {
             width: 100%;
             max-width: 1000px;
             margin-bottom: 20px;
             text-align: left;
         }
-
         summary {
             font-size: 1.2rem;
             font-weight: 700;
@@ -213,7 +186,6 @@
             align-items: center;
             gap: 10px;
         }
-
         summary:hover { color: var(--accent); }
         summary::before {
             content: "\f0da";
@@ -222,14 +194,12 @@
             transition: transform 0.3s;
         }
         details[open] summary::before { transform: rotate(90deg); }
-
         .zone-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 20px;
             padding: 20px 0;
         }
-
         .zone-item {
             aspect-ratio: 2/3;
             background: var(--bg-2);
@@ -240,12 +210,10 @@
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
         .zone-item:hover {
             transform: scale(1.05);
             border-color: var(--accent);
         }
-
         .zone-item img {
             width: 100%;
             height: 100%;
@@ -253,9 +221,7 @@
             opacity: 0.8;
             transition: opacity 0.3s;
         }
-
         .zone-item:hover img { opacity: 1; }
-
         .zone-overlay {
             position: absolute;
             bottom: 0;
@@ -264,7 +230,6 @@
             padding: 15px 10px;
             background: linear-gradient(transparent, rgba(0,0,0,0.95));
         }
-
         .zone-overlay h4 {
             font-size: 0.85rem;
             font-weight: 700;
@@ -272,8 +237,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
-        /* Zone Viewer */
         #zoneViewer {
             position: fixed;
             top: 0;
@@ -285,7 +248,6 @@
             display: none;
             flex-direction: column;
         }
-
         .zone-header {
             background: #111;
             padding: 15px 25px;
@@ -294,9 +256,7 @@
             align-items: center;
             border-bottom: 1px solid var(--border-grey);
         }
-
         #zoneName { color: var(--accent); font-size: 1.1rem; }
-
         .zone-controls { display: flex; gap: 10px; }
         .zone-controls button {
             background: var(--bg-3);
@@ -309,10 +269,7 @@
             transition: background 0.2s;
         }
         .zone-controls button:hover { background: var(--bg-4); }
-
         #zoneFrame { flex-grow: 1; border: none; }
-
-        /* Popups */
         #popupOverlay {
             position: fixed;
             top: 0;
@@ -326,7 +283,6 @@
             justify-content: center;
             align-items: center;
         }
-
         .popup {
             background: #0f0f0f;
             border: 1px solid var(--border-grey);
@@ -336,20 +292,17 @@
             max-width: 420px;
             text-align: center;
         }
-
         .popup-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
-
         .popup-body {
             color: var(--text-grey);
             line-height: 1.6;
             margin-bottom: 25px;
         }
-
         .popup-btn {
             background: var(--accent);
             color: white;
@@ -361,7 +314,6 @@
             width: 100%;
             transition: opacity 0.3s;
         }
-
         .popup-btn:disabled {
             background: var(--bg-4);
             color: var(--text-grey);
@@ -369,6 +321,60 @@
             opacity: 0.6;
         }
 
+        #tvModal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(12px);
+            z-index: 2200;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #0f0f0f;
+            border: 1px solid var(--border-grey);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 460px;
+            text-align: center;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #aaa;
+        }
+        .close:hover { color: #fff; }
+        select {
+            background: #1a1a1a;
+            color: #fff;
+            border: 1px solid var(--border-grey);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+        .settings-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 18px;
+            background: #fff;
+            color: #000;
+            font-weight: 800;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        .settings-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
         @media (max-width: 600px) {
             #navbar { width: 60px; }
             .zone-container { grid-template-columns: repeat(2, 1fr); }
@@ -415,17 +421,16 @@
 
     <main>
         <h1 class="hometitle">Cherri</h1>
-        
+       
         <div class="inputcontainer">
             <i class="fa-solid fa-magnifying-glass" style="color: var(--accent);"></i>
-            <input type="text" id="searchBar" placeholder="Search for a movie..." oninput="filterMovies()">
+            <input type="text" id="searchBar" placeholder="Search for a movie or show..." oninput="filterMovies()">
         </div>
 
         <details open>
             <summary id="featuredSummary">Featured Vaults</summary>
             <div id="featuredMovies" class="zone-container"></div>
         </details>
-
         <details open>
             <summary id="allSummary">All Cinema</summary>
             <div id="container" class="zone-container"></div>
@@ -435,7 +440,7 @@
     <div id="zoneViewer">
         <div class="zone-header">
             <div class="zone-title">
-                <h2 id="zoneName">Movie Name</h2>
+                <h2 id="zoneName">Title</h2>
             </div>
             <div class="zone-controls">
                 <button id="openExternalBtn" title="Open in new tab"><i class="fa-solid fa-up-right-from-square"></i></button>
@@ -446,15 +451,30 @@
         <iframe id="zoneFrame" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
     </div>
 
-    <!-- Landing / Access Guide Popup -->
+    <div id="tvModal">
+        <div class="modal-content">
+            <div class="close" onclick="closeModal('tvModal')">✕</div>
+            <h2 id="tvDisplayTitle" style="margin-bottom: 20px; font-weight: 800;">Outer Banks</h2>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <select id="seasonSelect" onchange="updateEpisodes()" style="flex: 1;">
+                    <option value="1">Season 1</option>
+                    <option value="2">Season 2</option>
+                    <option value="3">Season 3</option>
+                    <option value="4">Season 4</option>
+                </select>
+                <select id="episodeSelect" style="flex: 1;">
+                </select>
+            </div>
+            <button class="settings-btn" id="finalPlayBtn" onclick="playSelectedEpisode()">Watch Now</button>
+        </div>
+    </div>
+
     <div id="popupOverlay">
         <div class="popup" id="mainPopup">
             <div class="popup-header">
                 <h3 id="popupTitle">Welcome to Cherri</h3>
             </div>
-            <div id="popupBody" class="popup-body">
-                <!-- Content set by JS -->
-            </div>
+            <div id="popupBody" class="popup-body"></div>
             <button id="popupConfirmBtn" class="popup-btn" disabled>Wait (7s)</button>
         </div>
     </div>
@@ -472,7 +492,7 @@
         const popupTitle = document.getElementById('popupTitle');
 
         let currentUrl = "";
-
+                        
         const movieDatabase = [
             { name: "Hoppers", featured: true, cover: "https://m.media-amazon.com/images/M/MV5BZTI4YzAxNjUtM2ZhZS00MmFkLWI1YTYtZGViNWM5MzA1NDQxXkEyXkFqcGc@._V1_.jpg", url: "https://drive.google.com/file/d/1NkmCNf5CUML_KZvNi4fgGKA8r7fpXIdd/view" },
             { name: "Scream 7", featured: true, cover: "data:image/jpeg;base64,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", url: "https://drive.google.com/file/d/1RtaN8_Xsodf4Ub5K_yRp6eOx62tbj7Ap/view?usp=drive_link" },
@@ -551,7 +571,23 @@
             { name: "Star Wars: Episode IV -  A New Hope", featured: false, cover: "https://m.media-amazon.com/images/M/MV5BOGUwMDk0Y2MtNjBlNi00NmRiLTk2MWYtMGMyMDlhYmI4ZDBjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", url: "https://drive.google.com/file/d/1nDgCNAuFgSI6fDKbRZFkDhzViib1ixYS/view?usp=drive_link" },
             { name: "Penguins of Madagascar", featured: false, cover: "https://m.media-amazon.com/images/M/MV5BMTEyMDg4MDU4MjdeQTJeQWpwZ15BbWU4MDQyOTc3MjIx._V1_FMjpg_UX1000_.jpg", url: "https://drive.google.com/file/d/1FhmVu6-NhOXoY12O7qbmLfpugGU2GtVR/view?usp=drive_link" },
             { name: "Topgun", featured: false, cover: "https://m.media-amazon.com/images/M/MV5BZmVjNzQ3MjYtYTZiNC00Y2YzLWExZTEtMTM2ZDllNDI0MzgyXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", url: "https://drive.google.com/file/d/1YPdexiO1cHulGguqGvHKq0Grsnpdlbs1/view" },
+            { name: "The Fantastic 4", featured: false, cover: "https://m.media-amazon.com/images/M/MV5BOGM5MzA3MDAtYmEwMi00ZDNiLTg4MDgtMTZjOTc0ZGMyNTIwXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", url: "https://sites.google.com/view/spatium-movie/the-fantastic-4" },
+            { name: "The Wolf of Wall Street", featured: false, cover: "https://m.media-amazon.com/images/M/MV5BMjIxMjgxNTk0MF5BMl5BanBnXkFtZTgwNjIyOTg2MDE@._V1_FMjpg_UX1000_.jpg", url: "https://sites.google.com/view/spatium-movie/the-wolf-of-wall-street" },
+            { name: "Zootopia 2", featured: false, cover: "https://m.media-amazon.com/images/M/MV5BYjg1Mjc3MjQtMTZjNy00YWVlLWFhMWEtMWI3ZTgxYjJmNmRlXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", url: "https://sites.google.com/view/spatium-movie/zootopia-2" },
+            { name: "Super Mario Bros Galaxy", featured: false, cover: "https://m.media-amazon.com/images/M/MV5BMDg5MjRkNWEtYmU1Mi00MTExLTk5MDQtY2RiMWVkZWNiOThjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", url: "https://sites.google.com/view/spatium-movie/super-mario-bros-galaxy" },
+            { name: "The Bad Guys 2", featured: false, cover: "https://m.media-amazon.com/images/M/MV5BY2YwODhmODctMjE2OS00Y2EyLWEyZTEtOGU3ODk5MGIzYmU1XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", url: "https://sites.google.com/view/spatium-movie/the-bad-guys-2" },
+            { name: "The Bad Guys", featured: false, cover: "https://m.media-amazon.com/images/M/MV5BODNlYmQzY2MtZWZiZS00Y2I0LTkwNjItNjg3MjY5YTFkNWI3XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", url: "https://sites.google.com/view/spatium-movie/the-bad-guys" },
+            { name: "Outer Banks", featured: true, cover: "https://m.media-amazon.com/images/M/MV5BY2FmYmJiYTQtYmJhZC00ZTIxLTk3OTAtNzc3NDk0NGMxYTdmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", isTV: true},
         ].sort((a, b) => a.name.localeCompare(b.name));
+
+        const outerBanksUrls = {
+            "1-1": "https://sites.google.com/view/spatium-shows-obx/obx-s1-e1", "1-2": "https://sites.google.com/view/spatium-shows-obx/obx-s1-e2", "1-3": "https://sites.google.com/view/spatium-shows-obx/obx-s1-e3", "1-4": "https://sites.google.com/view/spatium-shows-obx/obx-s1-e4", "1-5": "https://sites.google.com/view/spatium-shows-obx/obx-s1-e5", "1-6": "https://sites.google.com/view/spatium-shows-obx/obx-s1-e6", "1-7": "https://sites.google.com/view/spatium-shows-obx/obx-s1-e7", "1-8": "https://sites.google.com/view/spatium-shows-obx/obx-s1-e8", "1-9": "https://sites.google.com/view/spatium-shows-obx/obx-s1-e9", "1-10": "https://sites.google.com/view/spatium-shows-obx/obx-s1-e10",
+            "2-1": "https://sites.google.com/view/spatium-shows-obx/obx-s2-e1", "2-2": "https://sites.google.com/view/spatium-shows-obx/obx-s2-e2", "2-3": "https://sites.google.com/view/spatium-shows-obx/obx-s2-e3", "2-4": "https://sites.google.com/view/spatium-shows-obx/obx-s2-e4", "2-5": "https://sites.google.com/view/spatium-shows-obx/obx-s2-e5", "2-6": "https://sites.google.com/view/spatium-shows-obx/obx-s2-e6", "2-7": "https://sites.google.com/view/spatium-shows-obx/obx-s2-e7", "2-8": "https://sites.google.com/view/spatium-shows-obx/obx-s2-e8", "2-9": "https://sites.google.com/view/spatium-shows-obx/obx-s2-e9", "2-10": "https://sites.google.com/view/spatium-shows-obx/obx-s2-e10",
+            "3-1": "", "3-2": "", "3-3": "", "3-4": "", "3-5": "", "3-6": "", "3-7": "", "3-8": "", "3-9": "", "3-10": "",
+            "4-1": "", "4-2": "", "4-3": "", "4-4": "", "4-5": "", "4-6": "", "4-7": "", "4-8": "", "4-9": "", "4-10": ""
+        };
+
+        let currentTVShow = null;
 
         const pJS = function(tag_id) {
             const canvas_el = document.createElement('canvas');
@@ -564,13 +600,13 @@
                 canvas_h = canvas_el.height = canvas_el.offsetHeight;
                 particles = [];
                 for (let i = 0; i < 60; i++) {
-                    const shade = Math.floor(Math.random() * 50) + 40; 
+                    const shade = Math.floor(Math.random() * 50) + 40;
                     particles.push({
-                        x: Math.random() * canvas_w, 
+                        x: Math.random() * canvas_w,
                         y: Math.random() * canvas_h,
-                        vx: Math.random() * 1.5 + 0.5, 
+                        vx: Math.random() * 1.5 + 0.5,
                         vy: Math.random() * 1.5 + 0.5,
-                        radius: Math.random() * 2 + 1, 
+                        radius: Math.random() * 2 + 1,
                         color: `rgb(${shade}, ${shade}, ${shade})`
                     });
                 }
@@ -579,7 +615,7 @@
                 ctx.clearRect(0, 0, canvas_w, canvas_h);
                 particles.forEach(p => {
                     p.x += p.vx; p.y += p.vy;
-                    if (p.x > canvas_w) p.x = 0; 
+                    if (p.x > canvas_w) p.x = 0;
                     if (p.y > canvas_h) p.y = 0;
                     ctx.fillStyle = p.color;
                     ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
@@ -602,9 +638,53 @@
                         <h4>${movie.name}</h4>
                     </div>
                 `;
-                item.onclick = () => openMovie(movie);
+                item.onclick = () => openItem(movie);
                 target.appendChild(item);
             });
+        }
+
+        function openItem(item) {
+            if (item.isTV) {
+                currentTVShow = item;
+                document.getElementById('tvDisplayTitle').textContent = item.name;
+                document.getElementById('tvModal').style.display = "flex";
+                updateEpisodes();
+            } else if (item.url) {
+                currentUrl = item.url;
+                document.getElementById('zoneName').textContent = item.name;
+                zoneFrame.src = item.url;
+                zoneViewer.style.display = "flex";
+            } else {
+                alert("Streaming link coming soon for this title.");
+            }
+        }
+
+        function updateEpisodes() {
+            const season = document.getElementById('seasonSelect').value;
+            const epSelect = document.getElementById('episodeSelect');
+            epSelect.innerHTML = "";
+            for (let i = 1; i <= 10; i++) {
+                const opt = document.createElement('option');
+                opt.value = `${season}-${i}`;
+                opt.textContent = `Episode ${i}`;
+                epSelect.appendChild(opt);
+            }
+        }
+
+        function playSelectedEpisode() {
+            const selection = document.getElementById('episodeSelect').value;
+            let url = outerBanksUrls[selection];
+            
+            if (!url || url === "") {
+                url = "https://www.youtube.com/watch?v=OkNo_N85em0&list=RDOkNo_N85em0&start_radio=1";
+            }
+
+            closeModal('tvModal');
+            currentUrl = url;
+            const [season, episode] = selection.split('-');
+            document.getElementById('zoneName').textContent = `Outer Banks - S${season} E${episode}`;
+            zoneFrame.src = url;
+            zoneViewer.style.display = "flex";
         }
 
         function filterMovies() {
@@ -613,44 +693,9 @@
             displayMovies(filtered, container);
         }
 
-        function triggerGuidancePopup() {
-            popupTitle.textContent = "Access Guide";
-            popupBody.innerHTML = `
-                <p>Welcome to Cherri Cinema!</p>
-                <p style="margin-top: 15px;">If a movie says <strong>"Access Denied"</strong> or won't load, click the <strong>"Open in New Tab"</strong> button <i class="fa-solid fa-up-right-from-square"></i> in the top right corner of the player.</p>
-                <p style="margin-top:15px; font-size: 0.9rem; opacity: 0.7;">This fixes most loading issues.</p>
-            `;
-            
-            let timeLeft = 7;
-            popupConfirmBtn.disabled = true;
-            popupConfirmBtn.textContent = `Wait (${timeLeft}s)`;
-            popupConfirmBtn.onclick = closePopup;
-            popupOverlay.style.display = "flex";
-
-            const countdown = setInterval(() => {
-                timeLeft--;
-                if (timeLeft > 0) {
-                    popupConfirmBtn.textContent = `Wait (${timeLeft}s)`;
-                } else {
-                    clearInterval(countdown);
-                    popupConfirmBtn.textContent = "Okay";
-                    popupConfirmBtn.disabled = false;
-                }
-            }, 1000);
-        }
-
-        function openMovie(movie) {
-            if (!movie.url) return;
-            currentUrl = movie.url;
-            zoneFrame.src = movie.url;
-            document.getElementById('zoneName').textContent = movie.name;
-            zoneViewer.style.display = "flex";
-        }
-
         function openExternalNow() {
             if (currentUrl) window.open(currentUrl, '_blank');
         }
-
         openExternalBtn.onclick = openExternalNow;
 
         function closeZone() {
@@ -664,15 +709,43 @@
             else if (zoneFrame.webkitRequestFullscreen) zoneFrame.webkitRequestFullscreen();
         }
 
-        function closePopup() { 
-            popupOverlay.style.display = "none"; 
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        function triggerGuidancePopup() {
+            popupTitle.textContent = "Access Guide";
+            popupBody.innerHTML = `
+                <p>Welcome to Cherri Cinema!</p>
+                <p style="margin-top: 15px;">If a movie says <strong>"Access Denied"</strong> or won't load, click the <strong>"Open in New Tab"</strong> button <i class="fa-solid fa-up-right-from-square"></i> in the top right corner of the player.</p>
+                <p style="margin-top:15px; font-size: 0.9rem; opacity: 0.7;">This fixes most loading issues.</p>
+            `;
+            let timeLeft = 7;
+            popupConfirmBtn.disabled = true;
+            popupConfirmBtn.textContent = `Wait (${timeLeft}s)`;
+            popupConfirmBtn.onclick = () => { popupOverlay.style.display = "none"; };
+            popupOverlay.style.display = "flex";
+            const countdown = setInterval(() => {
+                timeLeft--;
+                if (timeLeft > 0) {
+                    popupConfirmBtn.textContent = `Wait (${timeLeft}s)`;
+                } else {
+                    clearInterval(countdown);
+                    popupConfirmBtn.textContent = "Okay";
+                    popupConfirmBtn.disabled = false;
+                }
+            }, 1000);
+        }
+
+        function closePopup() {
+            popupOverlay.style.display = "none";
         }
 
         window.onload = () => {
             pJS('particles-js');
             displayMovies(movieDatabase, container);
             displayMovies(movieDatabase.filter(m => m.featured), featuredContainer);
-            
+           
             document.getElementById('allSummary').textContent = `All Cinema (${movieDatabase.length})`;
             document.getElementById('featuredSummary').textContent = `Featured Vaults (${movieDatabase.filter(m => m.featured).length})`;
 
@@ -681,7 +754,6 @@
                 if (navEl) setTimeout(() => { navEl.style.left = "0"; }, 150 + (i * 120));
             });
 
-            // Trigger the guidance popup immediately on land
             setTimeout(triggerGuidancePopup, 300);
         };
 

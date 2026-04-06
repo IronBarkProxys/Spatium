@@ -1,425 +1,861 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Spatium | home</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spatium - Play Free Games</title>
+    <link rel="icon" id="favicon" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUSExMVFRUXFxUXFRUYFRUVFxcXFxUXFxUYFxcYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKBQUFDgUFDisZExkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAOEA4QMBIgACEQEDEQH/xAAbAAACAwEBAQAAAAAAAAAAAAACAwABBAUGB//EAD0QAAICAQEGBAMGAwYHAQAAAAABAhEDIQQSMUFRYQUGcYGRocETIjKx0fBC4fEzQ1JiktIjJFRjcoLCFP/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwD4zbi+jX75ElJVzu3fStK+oLQIFpD4Ylut7ytNVHW3d2+mlL4ioNrhz0G5sLi1vKrSa9GrXDsAhoiLaJQB6addfTsDRaLSAqiyUHix20rSvm/5ADRKCSHxwPd3tKuuK41fDj7gZi4sOQNACygqKoC5QadPRlEIBEXZQWOr1uu3H5gTJK3dJdkAFu6XyBAjBYVNgtADRC2RrmBTJEiRQEIQgBbrq+RVDFdVrXHtYWSSdJRSpU6vXu+4C0HJ2Cg3GgKce5El7hbpW6BSQWLI4u1o9fmqZKLUQJG6enrpw1+RUQki6ApIstIJRACiUNlH4lN6V3vgr+ICt0pxGOJVAA0DQyiqACiBtFUAFlBNFNAUnXAouiboAMqMb0LZQEkq0ZRGwpzutEtEtPz9QAIQgG7HtC3d1pc6dK9avXjy0RnopIJICQG8wIDEBFH9/wBCqGOVpKkq5836lNABQxRaptd1a0a+vApIOKAGMQ3gaSbTp8O9caKSGxV8wFboUYjYYvQPcfwAHJJvWlwS4caX5itwe4E3QM26VKJpaKjjt0gMriVumlwAcAENA0OcQXEAYSq1S17a+3TgAtHf58B6wtpy5KlxXO6058Bc41Wt/TsApMvaJqUm1FRTekVdLtrqTdBkgAoFsJlNAAUMWPRvp9QAKohq3sX+Gf8AqX6FABQSiGkHDG3wQEpaVfDW+vbsW40Xu1oOjBNPqq4tejpc2AqMnVXpd+/UjberDSaLSAGKCURkcTHxwgJhjHwxUOx4x8IID..." type="image/x-icon">
     <style>
-        :root {
-            --bg: #000000;
-            --bg-2: #0a0a0a;
-            --bg-3: #121212;
-            --bg-4: #1a1a1a;
-            --border-grey: #2a2a2a;
-            --search-border: #1c1c1c;
-            --accent: #f365ac;
-            --accent-glow: rgba(243, 101, 172, 0.4);
-            --text-white: #ffffff;
-            --text-bright-grey: #e0e0e0;
-            --text-grey: #b0b0b0;
-            --nav-width: 75px;
-            --tooltip-bg: #1a1a1a;
-            
-            /* Title Gradient */
-            --cherri-pink-light: #ffb3d9;
-            --cherri-pink-mid: #f365ac;
-            --cherri-pink-soft-dark: #d64d92;
-        }
+    :root {
+    --bg: #000000;
+    --surface: #111111;
+    --text: #eeeeee;
+    --border: #333333;
+    --textbox: #1e293b;
+    --accent: #f365ac;
+    --accent-glow: rgba(243, 101, 172, 0.3);
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Figtree', sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        body {
-            background-color: var(--bg);
-            color: var(--text-white);
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            display: flex;
-        }
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    cursor: default;
+}
 
-        /* Particles Background */
-        #particles-js {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
+/* ================= BLUR UTILITIES ================= */
+.backdrop-blur-md {
+    backdrop-filter: blur(12px);
+}
 
-        /* Sidebar Styling */
-        #navbar {
-            position: relative;
-            z-index: 100;
-            width: var(--nav-width);
-            height: 100%;
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid var(--border-grey);
-            display: flex;
-            flex-direction: column;
-            padding: 25px 0;
-            align-items: center;
-        }
+/* ================= LOADING SCREEN ================= */
+#loadingScreen {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    color: white;
+}
 
-        #navbar ul {
-            list-style: none;
-            width: 100%;
-            padding: 0 12px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            position: relative;
-            left: -100px; /* Entrance animation start */
-            transition: left 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        }
+.loader {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #333;
+    border-top: 5px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
 
-        #navbar ul#section3nav { margin-top: auto; }
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
 
-        #navbar li {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 14px;
-            color: var(--text-grey);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 0 auto;
-        }
+#loadingScreen.fade-out {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
 
-        #navbar li i {
-            font-size: 1.3rem;
-            transition: transform 0.2s ease;
-        }
+/* ================= PARTICLES ================= */
+#particles {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.6;
+    cursor: none;
+}
 
-        #navbar li:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--text-white);
-        }
+/* ================= HEADER ================= */
+header {
+    position: sticky;
+    top: 0;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 1rem 0;
+}
 
-        #navbar li.active {
-            background: rgba(243, 101, 172, 0.15);
-            color: var(--accent);
-        }
+.header-upper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
 
-        /* Tooltip Logic */
-        .tooltip {
-            position: absolute;
-            left: 70px;
-            background: var(--tooltip-bg);
-            color: white;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            white-space: nowrap;
-            pointer-events: none;
-            opacity: 0;
-            transform: translateX(-10px);
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid var(--border-grey);
-            z-index: 1000;
-        }
+.logo {
+    font-size: 2rem;
+    font-weight: 800;
+    cursor: pointer;
+}
 
-        #navbar li:hover .tooltip {
-            opacity: 1;
-            transform: translateX(0);
-        }
+.search-wrapper {
+    flex: 1;
+    max-width: 500px;
+    position: relative;
+}
 
-        /* Main Content Container */
-        .container {
-            flex-grow: 1;
-            position: relative;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            animation: fadeIn 0.8s ease-out;
-        }
+.search-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent);
+}
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+#searchBar {
+    width: 100%;
+    padding: 14px 20px 14px 50px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: white;
+    outline: none;
+    font-size: 1.05rem;
+}
 
-        .hometitle {
-            font-size: 7.5rem;
-            font-weight: 900;
-            margin-bottom: 5px;
-            letter-spacing: -6px;
-            background: linear-gradient(to bottom, var(--cherri-pink-light) 0%, var(--cherri-pink-mid) 50%, var(--cherri-pink-soft-dark) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 12px var(--accent-glow));
-            user-select: none;
-            line-height: 1;
-        }
+.header-actions {
+    display: flex;
+    gap: 12px;
+}
 
-        #splash {
-            font-size: 1.1rem;
-            color: var(--text-bright-grey);
-            margin-bottom: 40px;
-            letter-spacing: 2px;
-            text-transform: lowercase;
-        }
+.btn-icon {
+    background: #222;
+    color: white;
+    border: 1px solid #444;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
 
-        /* Search Input */
-        .inputcontainer {
-            background: var(--bg-2);
-            border: 1px solid var(--search-border);
-            border-radius: 12px;
-            padding: 16px 24px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: all 0.3s ease;
-            width: 100%;
-            max-width: 500px;
-            margin: 0 auto 40px auto;
-        }
+.btn-icon:hover {
+    background: #333;
+    border-color: var(--accent);
+}
 
-        .inputcontainer:focus-within {
-            border-color: var(--text-white);
-            background: var(--bg-3);
-        }
+/* Nav Bar */
+.nav-bar {
+    background: rgba(10, 10, 10, 0.95);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+}
 
-        .inputcontainer input {
-            background: none;
-            border: none;
-            outline: none;
-            color: var(--text-white);
-            font-size: 1.1rem;
-            width: 100%;
-        }
+.nav-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    gap: 30px;
+}
 
-        /* Shortcuts */
-        .flex-row {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
+.nav-link {
+    padding: 8px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
 
-        .shortcut-home {
-            background: var(--bg-2);
-            border: 1px solid var(--border-grey);
-            padding: 20px;
-            border-radius: 12px;
-            width: 100px;
-            height: 100px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            color: inherit;
-        }
+.nav-link.active, .nav-link:hover {
+    background: rgba(243, 101, 172, 0.15);
+    color: var(--accent);
+}
 
-        .shortcut-home:hover {
-            background: var(--bg-3);
-            border-color: var(--text-white);
-            transform: translateY(-4px);
-        }
+/* ================= TITLE ================= */
+.hometitle {
+    text-align: center;
+    font-size: clamp(2.8rem, 8vw, 5rem);
+    font-weight: 900;
+    margin: 2.5rem 0 1.5rem;
+    letter-spacing: -3px;
+    background: linear-gradient(to bottom, #ffb3d9, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-        .shortcut-home i { font-size: 24px; margin-bottom: 10px; }
-        .shortcut-home h3 { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-bright-grey); }
+/* ================= SECTION HEADER ================= */
+.section-header {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        /* Bottom UI */
-        #online {
-            position: absolute;
-            bottom: 25px;
-            left: calc(50% + 37px); /* Compensate for sidebar */
-            transform: translateX(-50%);
-            color: var(--text-grey);
-            opacity: 0.7;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-            z-index: 10;
-        }
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
 
-        /* Notice UI */
-        .bluroverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            z-index: 999;
-        }
+.collapse-arrow {
+    transition: transform 0.3s;
+}
 
-        .anotice {
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            background: #111;
-            border: 1px solid var(--border-grey);
-            padding: 40px;
-            border-radius: 24px;
-            z-index: 1000;
-            max-width: 350px;
-            text-align: center;
-        }
+details[open] .collapse-arrow {
+    transform: rotate(180deg);
+}
 
-        .anotice h2 { margin-bottom: 10px; color: var(--accent); }
-        .anotice button {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 12px;
-            margin-top: 25px;
-            cursor: pointer;
-        }
-        
-        .hidden { display: none !important; }
+/* ================= GRID ================= */
+.zone-container, .grid-layout {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px 4rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 30px;
+}
+
+/* ================= GAME CARD ================= */
+.zone-item {
+    width: 100%;
+    aspect-ratio: 1 / 1.5;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+}
+
+.zone-item:hover {
+    transform: translateY(-8px) scale(1.03);
+    border-color: var(--accent);
+    box-shadow: 0 15px 35px rgba(243, 101, 172, 0.2);
+}
+
+.zone-item img {
+    width: 100%;
+    height: 65%;
+    object-fit: cover;
+}
+
+.zone-item button {
+    width: 100%;
+    height: 35%;
+    background: var(--textbox);
+    border: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+/* ================= SWIPER STYLES (for featured & trending) ================= */
+.swiper {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.swiper-slide {
+    width: 280px;
+    height: 380px;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ================= GAME VIEWER ================= */
+#zoneViewer {
+    position: fixed;
+    inset: 0;
+    background: black;
+    z-index: 2000;
+    display: none;
+    flex-direction: column;
+}
+
+.zone-header {
+    background: #111;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #333;
+}
+
+.zone-controls button {
+    background: #222;
+    color: white;
+    border: 1px solid #444;
+    padding: 10px 16px;
+    margin-left: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#zoneFrame {
+    flex: 1;
+    border: none;
+}
+
+/* ================= ONLINE COUNTER ================= */
+#onlineCounter {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #111;
+    border: 1px solid #333;
+    padding: 8px 16px;
+    border-radius: 10px;
+    color: white;
+    font-size: 14px;
+    z-index: 9999;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1200px) {
+    .zone-container, .grid-layout {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 800px) {
+    .zone-container, .grid-layout {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 0 30px 4rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .zone-container, .grid-layout {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 0 20px 4rem;
+    }
+}
+
+/* ====================== SETTINGS MODAL ====================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    backdrop-filter: blur(12px);
+}
+
+.modal-content {
+    background: var(--surface);
+    width: 100%;
+    max-width: 520px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px var(--accent-glow);
+    border: 1px solid var(--border);
+}
+
+.modal-header {
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.6rem;
+    color: var(--text);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #888;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+.modal-close:hover {
+    color: var(--accent);
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 2rem;
+}
+
+.setting-row {
+    margin-bottom: 2rem;
+}
+
+.setting-row label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--text);
+    font-size: 1.05rem;
+}
+
+/* Toggle Switch */
+.toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: var(--text);
+}
+
+.toggle-label input[type="checkbox"] {
+    width: 48px;
+    height: 26px;
+    appearance: none;
+    background: #333;
+    border-radius: 50px;
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.toggle-label input[type="checkbox"]:checked {
+    background: var(--accent);
+}
+
+.toggle-label input[type="checkbox"]::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.toggle-label input[type="checkbox"]:checked::before {
+    transform: translateX(22px);
+}
+
+/* Buttons */
+.modal-btn {
+    width: 100%;
+    padding: 14px 20px;
+    background: #222;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    margin-top: 8px;
+}
+
+.modal-btn:hover {
+    background: #333;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.accent-btn {
+    background: var(--accent);
+    color: #000;
+    font-weight: 700;
+}
+
+.accent-btn:hover {
+    background: #ffb3d9;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px var(--accent-glow);
+}
+
+/* Theme Grid */
+.theme-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.theme-option {
+    padding: 16px 12px;
+    text-align: center;
+    background: var(--surface);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.25s ease;
+}
+
+.theme-option:hover {
+    transform: scale(1.05);
+}
+
+.theme-option.active {
+    border-color: var(--accent);
+    background: rgba(243, 101, 172, 0.15);
+    box-shadow: 0 0 15px var(--accent-glow);
+}
     </style>
 </head>
 <body>
-    <div id="particles-js"></div>
-
-    <nav id="navbar">
-        <ul id="section1nav">
-            <li class="active" onclick="page('home')" data-target="home">
-                <i class="fa-solid fa-house"></i>
-                <div class="tooltip">Home</div>
-            </li>
-        </ul>
-        <ul id="section2nav">
-            <li onclick="page('games')" data-target="games"><i class="fa-solid fa-gamepad"></i><div class="tooltip">Games</div></li>
-            <li onclick="page('browse')" data-target="browse"><i class="fa-solid fa-globe"></i><div class="tooltip">Browser</div></li>
-            <li onclick="page('watch')" data-target="watch"><i class="fa-solid fa-video"></i><div class="tooltip">Movies & TV</div></li>
-            <li onclick="page('listen')" data-target="listen"><i class="fa-solid fa-music"></i><div class="tooltip">Music</div></li>
-            <li onclick="page('ai')" data-target="ai"><i class="fa-solid fa-wand-magic-sparkles"></i><div class="tooltip">AI</div></li>
-        </ul>
-        <ul id="section3nav">
-            <li onclick="page('profile')" data-target="profile"><i class="fa-solid fa-user-gear"></i><div class="tooltip">Profile</div></li>
-            <li onclick="page('settings')" data-target="settings"><i class="fa-solid fa-gear"></i><div class="tooltip">Settings</div></li>
-        </ul>
-    </nav>
-
-    <div class="container">
-        <h1 class="hometitle">Spatium</h1>
-        <p id="splash">loading...</p>
-        
-        <div class="inputcontainer">
-            <i class="fa-solid fa-magnifying-glass" style="color: var(--text-bright-grey);"></i>
-            <input type="text" id="homesearchlol" placeholder="Search..." autocomplete="off">
-        </div>
-
-        <div class="flex-row">
-            <a href="#" class="shortcut-home"><i class="fa-brands fa-nvidia"></i><h3>GF Now</h3></a>
-            <a href="#" class="shortcut-home"><i class="fa-brands fa-youtube"></i><h3>YouTube</h3></a>
-            <a href="#" class="shortcut-home"><i class="fa-brands fa-github"></i><h3>Github</h3></a>
-            <a href="#" class="shortcut-home"><i class="fa-solid fa-bolt"></i><h3>Fast</h3></a>
-            <a href="#" class="shortcut-home"><i class="fa-brands fa-discord"></i><h3>Discord</h3></a>
-        </div>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" style="position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;color:white;">
+        <div style="width:50px;height:50px;border:5px solid #333;border-top:5px solid var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin-bottom:20px;"></div>
+        <p id="loadingText">Loading games...</p>
     </div>
 
-    <p id="online">ENCRYPTED CONNECTION • 200 OK</p>
+    <!-- Particles -->
+    <canvas id="particles"></canvas>
 
-    <div class="anotice hidden" id="noticeBox">
-        <h2>Notice</h2>
-        <p>SPATIUM // CHERRI V2 is here!</p>
-        <button onclick="closeNotice()">Understood</button>
+    <!-- Header -->
+    <header>
+        <div class="header-upper">
+            <div class="logo" onclick="location.reload()">Spatium</div>
+            <div class="search-wrapper">
+                <input type="text" id="searchBar" placeholder="Search games..." oninput="filterGames()">
+            </div>
+            <button onclick="openSettings()" style="background:none;border:none;color:white;font-size:1.6rem;cursor:pointer;">⚙️</button>
+        </div>
+    </header>
+
+    <main style="max-width:1400px;margin:auto;">
+        <h2 style="padding:20px 20px 10px;color:var(--accent);">🔥 Trending This Week</h2>
+        <div id="trendingWrapper"></div>
+
+        <h2 style="padding:30px 20px 10px;">Featured Games</h2>
+        <div class="grid-layout" id="featuredGrid"></div>
+
+        <h2 style="padding:30px 20px 10px;">All Games</h2>
+        <div class="grid-layout" id="allGamesGrid"></div>
+    </main>
+
+    <!-- Game Viewer -->
+    <div id="zoneViewer" style="display:none;position:fixed;inset:0;background:black;z-index:2000;flex-direction:column;">
+        <div style="background:#111;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;color:white;">
+            <h2 id="zoneName">Game Title</h2>
+            <div>
+                <button onclick="fullscreenZone()">Fullscreen</button>
+                <button onclick="closeZone()">Close</button>
+            </div>
+        </div>
+        <iframe id="zoneFrame" style="flex:1;border:none;" allowfullscreen></iframe>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal-overlay">
+        <div class="modal-content">
+            <div style="padding:20px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);">
+                <h2>Settings</h2>
+                <button onclick="closeSettings()" style="background:none;border:none;font-size:28px;color:#888;cursor:pointer;">✕</button>
+            </div>
+            <div style="padding:25px;">
+                <button onclick="openInAboutBlank()" class="modal-btn" style="margin-bottom:20px;">🌐 Open site in about:blank (new tab)</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Particle System Script
-        const pJS = function(tag_id) {
-            const canvas_el = document.createElement('canvas');
-            canvas_el.style.width = "100%";
-            canvas_el.style.height = "100%";
-            document.getElementById(tag_id).appendChild(canvas_el);
-            const ctx = canvas_el.getContext('2d');
-            let canvas_w, canvas_h, particles = [];
+// ====================== PARTICLES ======================
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
 
-            const init = () => {
-                canvas_w = canvas_el.width = canvas_el.offsetWidth;
-                canvas_h = canvas_el.height = canvas_el.offsetHeight;
-                particles = [];
-                for (let i = 0; i < 70; i++) {
-                    const shade = Math.floor(Math.random() * 40) + 50; 
-                    particles.push({
-                        x: Math.random() * canvas_w, y: Math.random() * canvas_h,
-                        vx: Math.random() * 0.8 + 0.4, vy: Math.random() * 0.8 + 0.4,
-                        radius: Math.random() * 2 + 1, color: `rgb(${shade}, ${shade}, ${shade})`
-                    });
-                }
-            };
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
 
-            const draw = () => {
-                ctx.clearRect(0, 0, canvas_w, canvas_h);
-                particles.forEach(p => {
-                    p.x += p.vx; p.y += p.vy;
-                    if (p.x > canvas_w) p.x = 0; if (p.y > canvas_h) p.y = 0;
-                    ctx.fillStyle = p.color;
-                    ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
-                });
-                requestAnimationFrame(draw);
-            };
-            window.addEventListener('resize', init);
-            init(); draw();
-        };
+class Particle {
+    constructor() { this.reset(); }
+    reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height - 100;
+        this.size = Math.random() * 3 + 1.5;
+        this.speedX = Math.random() * 0.7 + 0.3;
+        this.speedY = Math.random() * 0.9 + 0.5;
+        this.opacity = Math.random() * 0.4 + 0.25;
+    }
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x > canvas.width + 100 || this.y > canvas.height + 100) this.reset();
+    }
+    draw() {
+        ctx.save();
+        ctx.globalAlpha = this.opacity;
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+    }
+}
 
-        // Sidebar Page Logic
-        function page(target) {
-            document.querySelectorAll('#navbar li').forEach(li => li.classList.remove('active'));
-            const activeLi = document.querySelector(`li[data-target="${target}"]`);
-            if (activeLi) activeLi.classList.add('active');
+function initParticles() {
+    particles = [];
+    for (let i = 0; i < 90; i++) particles.push(new Particle());
+}
+
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(animateParticles);
+}
+
+// ====================== GAME LOADING ======================
+let allGames = [];
+
+async function loadGames() {
+    const loadingText = document.getElementById('loadingText');
+    const loadingScreen = document.getElementById('loadingScreen');
+    try {
+        loadingText.textContent = "Loading games...";
+        const res = await fetch('games.json?t=' + Date.now());
+        if (!res.ok) throw new Error("games.json not found");
+        const data = await res.json();
+        allGames = (data.games || data).sort((a, b) =>
+            a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        );
+        if (allGames.length === 0) throw new Error("No games in JSON");
+        console.log(`✅ Loaded ${allGames.length} games`);
+        // Featured Games
+        const featured = allGames.filter(game => game.featured === true);
+        displayGames(featured, 'featuredGrid');
+        console.log(`Featured games: ${featured.length}`);
+        // Trending This Week
+        displayTrending();
+        // All Games
+        displayGames(allGames, 'allGamesGrid');
+        // Hide loading screen
+        loadingScreen.classList.add('fade-out');
+        setTimeout(() => {
+            loadingScreen.style.display = 'none';
+        }, 600);
+    } catch (err) {
+        console.error("Load error:", err);
+        loadingText.textContent = "Failed to load games. Check console (F12)";
+        loadingText.style.color = "#f365ac";
+    }
+}
+
+function displayGames(games, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) {
+        console.error(`Container #${containerId} not found`);
+        return;
+    }
+    container.innerHTML = '';
+    if (games.length === 0) {
+        container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: #888; padding: 3rem;">No games found</p>`;
+        return;
+    }
+    games.forEach(game => {
+        const div = document.createElement('div');
+        div.className = 'zone-item';
+        div.innerHTML = `
+            <img src="${game.thumbnail}"
+                 alt="${game.name}"
+                 onerror="this.src='https://via.placeholder.com/300x400/1a1a1a/ffffff?text=${encodeURIComponent(game.name)}'">
+            <button>${game.name}</button>
+        `;
+        div.addEventListener('click', () => openGame(game));
+        container.appendChild(div);
+    });
+}
+
+// ====================== TRENDING THIS WEEK ======================
+function displayTrending() {
+    const container = document.getElementById('trendingWrapper');
+    if (!container) {
+        console.error("Container #trendingWrapper not found in HTML");
+        return;
+    }
+    container.innerHTML = '';
+    let trendingGames = allGames.filter(game => game.trending === true);
+    console.log(`Trending games marked: ${trendingGames.length}`);
+    if (trendingGames.length === 0) {
+        trendingGames = allGames.slice(0, 8);
+        console.warn("⚠️ No games with 'trending: true'. Showing first 8 games as fallback.");
+    }
+    trendingGames.forEach(game => {
+        const slide = document.createElement('div');
+        slide.className = 'swiper-slide';
+        slide.style.cursor = 'pointer';
+        slide.innerHTML = `
+            <img src="${game.thumbnail}"
+                 alt="${game.name}"
+                 onerror="this.src='https://via.placeholder.com/280x380/1a1a1a/ffffff?text=${encodeURIComponent(game.name)}'">
+            <p>${game.name}</p>
+        `;
+        slide.addEventListener('click', () => openGame(game));
+        container.appendChild(slide);
+    });
+}
+
+// ====================== SEARCH ======================
+function filterGames() {
+    const query = document.getElementById('searchBar').value.toLowerCase().trim();
+    if (!query) {
+        displayGames(allGames, 'allGamesGrid');
+        return;
+    }
+    const filtered = allGames.filter(game =>
+        game.name.toLowerCase().includes(query)
+    );
+    displayGames(filtered, 'allGamesGrid');
+}
+
+// ====================== GAME PLAYER ======================
+function openGame(game) {
+    const viewer = document.getElementById('zoneViewer');
+    const frame = document.getElementById('zoneFrame');
+    const title = document.getElementById('zoneName');
+    title.textContent = game.name;
+    frame.src = `games/${game.folder}/index.html`;
+    viewer.style.display = 'flex';
+}
+
+function closeZone() {
+    const viewer = document.getElementById('zoneViewer');
+    const frame = document.getElementById('zoneFrame');
+    viewer.style.display = 'none';
+    frame.src = 'about:blank';
+}
+
+function fullscreenZone() {
+    const frame = document.getElementById('zoneFrame');
+    if (frame.requestFullscreen) frame.requestFullscreen();
+    else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
+}
+
+// ====================== SETTINGS ======================
+function openSettings() {
+    document.getElementById('settingsModal').style.display = 'flex';
+    document.getElementById('siteTitleInput').value = document.title;
+}
+
+function closeSettings() {
+    document.getElementById('settingsModal').style.display = 'none';
+}
+
+function toggleParticles(enabled) {
+    const canvas = document.getElementById('particles');
+    canvas.style.opacity = enabled ? '0.6' : '0';
+}
+
+// ==================== FIXED ABOUT:BLANK FUNCTION ====================
+function openInAboutBlank() {
+    try {
+        const newTab = window.open('about:blank', '_blank');
+        
+        if (newTab) {
+            newTab.document.write(`
+                <script>
+                    window.location.href = "${window.location.href}";
+                <\/script>
+            `);
+            closeSettings();
+        } else {
+            alert("❌ Popup blocked!\n\nPlease allow popups for this site and try again.");
         }
+    } catch (e) {
+        console.error("About:blank error:", e);
+        alert("Could not open new tab.\nTry right-clicking the page → Open link in new tab.");
+    }
+}
 
-        function closeNotice() {
-            document.getElementById('noticeBox').classList.add('hidden');
-            const overlay = document.querySelector('.bluroverlay');
-            if (overlay) overlay.remove();
-        }
+function changeSiteTitle() {
+    const newTitle = document.getElementById('siteTitleInput').value.trim();
+    if (newTitle) {
+        document.title = newTitle;
+        closeSettings();
+    }
+}
 
-        window.onload = () => {
-            pJS('particles-js');
+function uploadFavicon() {
+    const fileInput = document.getElementById('faviconUpload');
+    const file = fileInput.files[0];
+    if (!file) return alert("Please select an image");
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById('favicon').href = e.target.result;
+        closeSettings();
+        alert("✅ Favicon updated! (hard refresh if it doesn't change immediately)");
+    };
+    reader.readAsDataURL(file);
+}
 
-            // Splash Logic
-            const splashes = ["ggs", "error: could not load splash", "best game site ever?", "7 8", "w o w", "partnered with everyone"];
-            document.getElementById('splash').textContent = splashes[Math.floor(Math.random() * splashes.length)];
+const themes = {
+    space: { '--bg': '#000000', '--surface': '#111111', '--accent': '#f365ac' },
+    aquatic: { '--bg': '#0a1f2f', '--surface': '#132e44', '--accent': '#00d4ff' },
+    cherry: { '--bg': '#1a0f14', '--surface': '#2c1b22', '--accent': '#ff8ac4' },
+    swamp: { '--bg': '#0f1a0f', '--surface': '#1f2a1f', '--accent': '#7cff7c' }
+};
 
-            // Search Logic
-            document.getElementById("homesearchlol").addEventListener("keydown", (e) => {
-                if (e.key === "Enter") {
-                    const query = e.target.value.trim();
-                    if (query) window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-                }
-            });
+function setTheme(themeName) {
+    const root = document.documentElement;
+    const theme = themes[themeName];
+    Object.keys(theme).forEach(key => root.style.setProperty(key, theme[key]));
 
-            // Sidebar Animations
-            ['section1nav', 'section2nav', 'section3nav'].forEach((id, index) => {
-                setTimeout(() => { document.getElementById(id).style.left = "0"; }, 150 + (index * 120));
-            });
+    document.querySelectorAll('.theme-option').forEach(el => {
+        el.classList.toggle('active', el.getAttribute('data-theme') === themeName);
+    });
+    closeSettings();
+}
 
-            // Notice simulation
-            setTimeout(() => {
-                document.getElementById('noticeBox').classList.remove('hidden');
-                const bluroverlay = document.createElement("div");
-                bluroverlay.classList.add("bluroverlay");
-                document.body.appendChild(bluroverlay);
-            }, 800);
-        };
+// ====================== INIT ======================
+window.onload = () => {
+    resizeCanvas();
+    initParticles();
+    animateParticles();
+    loadGames();
+
+    const searchBar = document.getElementById('searchBar');
+    if (searchBar) searchBar.addEventListener('input', filterGames);
+
+    window.addEventListener('resize', resizeCanvas);
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape") closeZone();
+    });
+};
     </script>
 </body>
 </html>
